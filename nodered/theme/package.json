@@ -1,0 +1,11 @@
+{
+  "name": "node-red-theme-freya",
+  "version": "0.1.0",
+  "description": "Minimalist Freya theme for Node-RED editor",
+  "keywords": ["node-red", "node-red-theme"],
+  "node-red": {
+    "plugins": {
+      "freya": "theme.js"
+    }
+  }
+}

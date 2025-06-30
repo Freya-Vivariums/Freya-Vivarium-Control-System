@@ -29,14 +29,14 @@ module.exports = {
     externalModules: {},
 
     editorTheme: {
+        theme: "freya",
         page: {
-            title: "Freya Control",
-            favicon: "/assets/favicon.ico"
+            title: "Freya",
+            favicon: "/favicon.ico"
         },
         header: {
-            title: "Freya",
-            image: "/assets/logo.png",
-            url: "/"
+            title: " ",
+            url: "/",
         },
         palette: {},
         projects: {

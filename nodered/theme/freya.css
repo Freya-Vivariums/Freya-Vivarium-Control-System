@@ -1,0 +1,13 @@
+/* Minimalist Freya Theme: overrides editor header logo & header bar */
+#red-ui-header {
+  background-color: #0c0c0c;
+}
+#red-ui-header .red-ui-header-logo {
+  background: url('/Freya_logo_light.png') no-repeat left center;
+  background-size: contain;
+  width: 150px;
+  height: 30px;
+}
+#red-ui-header .red-ui-header-logo svg {
+  display: none !important;
+}

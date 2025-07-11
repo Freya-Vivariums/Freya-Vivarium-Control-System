@@ -4,6 +4,9 @@
     "version": "0.0.1",
     "private": true,
     "dependencies": {
+        "node-red-contrib-edgeberry": "^0.1.18",
+        "node-red-contrib-freya": "file:../../../home/spuq/node-red-contrib-freya-temp",
+        "node-red-dashboard": "^3.6.5",
         "node-red-theme-freya": "file:theme"
     }
 }

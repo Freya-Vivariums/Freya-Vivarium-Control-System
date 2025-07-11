@@ -5,7 +5,7 @@
   "keywords": ["node-red", "node-red-theme"],
   "node-red": {
     "plugins": {
-      "freya": "theme.js"
+      "freya": "freya_theme.js"
     }
   }
 }

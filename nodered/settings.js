@@ -1,6 +1,6 @@
 module.exports = {
 
-    flowFile: 'flows.json',
+    flowFile: 'flows/flows.json',
     flowFilePretty: true,
 
     diagnostics: {

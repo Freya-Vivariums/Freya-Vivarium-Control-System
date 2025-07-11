@@ -2,5 +2,5 @@ nodered/node_modules
 nodered/.*
 nodered/lib
 hardware/
-nodered/flows/.config.*
-nodered/flows/*.backup 
+nodered/.config.*
+nodered/*.backup 

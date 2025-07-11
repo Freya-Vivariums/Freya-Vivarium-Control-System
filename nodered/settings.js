@@ -1,6 +1,11 @@
-module.exports = {
+const path = require('path');
 
-    flowFile: 'flows/flows.json',
+module.exports = {
+    userDir: '/opt/Freya/nodered',
+    flowFile: 'flows/Freya_flows.json',
+    library: {
+        user: path.join(__dirname, 'flows', 'lib')
+    },
     flowFilePretty: true,
 
     diagnostics: {

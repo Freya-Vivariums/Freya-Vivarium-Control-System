@@ -12,11 +12,12 @@
 PROJECT=Freya
 REPONAME=${PROJECT}
 REPOOWNER=Freya-Vivariums
-SYSDCONF=freya-nodered-service.conf
+
 APPDIR=/opt/${PROJECT}
-# Repo's for the hardware drivers
+SYSDCONF=freya-nodered-service.conf
+# Repo names for the hardware drivers
 ACTUATORDRIVERREPO=Freya-actuators-driver
-SENSORDRIVERREPO=
+SENSORDRIVERREPO=Freya-sensor-driver
 
 # Check if this script is running as root. If not, notify the user
 # to run this script again as root and cancel the installtion process
@@ -28,6 +29,26 @@ fi
 
 # Continue with a clean screen
 clear;
+
+# Display a fancy logo
+echo "                  +                                                                               "
+echo "                 +++                                                                              "
+echo "        ==       ++++                                                                             "
+echo "        =====   =+++++                                                                            "
+echo "        ======= ++++++      %%%%%%%%%%%  %%%%%%%%%%    %%%%%%%%%%%%%%%%%     %%%%%    %%%%%  TM   "
+echo "        ========+++++++     %%%%%%%%%%%  %%%%%%%%%%%%  %%%%%%%%%%%% %%%%     %%%%    %%%%%%       "
+echo "   -----=======++++++++     %%%%         %%%%   %%%%%  %%%%%         %%%%   %%%%    %%%%%%%%      "
+echo "    ---- ======+++++++++    %%%%         %%%%    %%%%  %%%%%          %%%% %%%%     %%%% %%%%     "
+echo "    -----======+++++++++    %%%%%%%%%%   %%%%%%%%%%%%  %%%%%%%%%%      %%%%%%%     %%%%  %%%%     "
+echo "     -----=====+++++++++    %%%%%%%%%%   %%%%%%%%%%    %%%%%%%%%%      %%%%%%     %%%%%%%%%%%%    "
+echo "     +----=====+++++++++    %%%%         %%%%%%%%%%    %%%%%            %%%%%     %%%%%%%%%%%%%   "
+echo "  ++**+ ----====++++++++    %%%%         %%%%  %%%%%   %%%%%            %%%%%    %%%%%%%%%%%%%%   "
+echo " *******+----====+++++++    %%%%         %%%%   %%%%%  %%%%%%%%%%%%     %%%%%   %%%%%       %%%%  "
+echo " +*+******+----===+++++     %%%%         %%%%    %%%%% %%%%%%%%%%%%     %%%%%   %%%%        %%%%% "
+echo "   ********+*+=- = +++                                                                            "
+echo "      ***********++                                                                               "
+echo "         +***++*                                                                                  "
+echo ""
 
 ##
 #   Dependencies

@@ -19,7 +19,9 @@ jobs:
           mkdir tempdir
           mv assets/ tempdir/
           mv config/ tempdir/
-          mv scripts/ tempdir/
+          cp -r scripts/ tempdir/
+          mv -r nodered/ tempdir/
+          mv LICENSE.txt tempdir/
 
       - name: Create tarball
         run: tar -C tempdir -zcvf package.tar.gz .

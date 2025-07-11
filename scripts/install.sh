@@ -10,7 +10,7 @@
 ##
 
 PROJECT=Freya
-REPONAME=${PROJECT}
+REPONAME=Freya-Vivarium-Control-System
 REPOOWNER=Freya-Vivariums
 
 APPDIR=/opt/${PROJECT}

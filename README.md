@@ -10,7 +10,7 @@ The **Freya Vivarium Control System** lorem ipsum ...
 When installing the Freya system, the **system actuators driver is automatically installed** with the rest of the system. For manual installation run these commands on your device:
 
 ```
-wget -O install.sh https://github.com/Freya-Vivariums/Freya/releases/latest/download/install.sh;
+wget -O install.sh https://github.com/Freya-Vivariums/Freya-Vivarium-Control-System/releases/latest/download/install.sh;
 chmod +x ./install.sh;
 sudo ./install.sh;
 ```

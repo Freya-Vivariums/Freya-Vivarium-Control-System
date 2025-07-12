@@ -4,3 +4,4 @@ nodered/lib
 hardware/
 nodered/.config.*
 nodered/*.backup 
+nodered/flows/*.backup

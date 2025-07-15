@@ -10,19 +10,20 @@
     {
         "id": "9fb2621070b93c5c",
         "type": "ui_tab",
-        "name": "Monitor",
+        "name": "Freya Dashboard",
         "icon": "fa-chart",
+        "order": 1,
         "disabled": false,
-        "hidden": false
+        "hidden": true
     },
     {
         "id": "88315fc736f20c52",
         "type": "ui_base",
         "theme": {
-            "name": "theme-light",
+            "name": "theme-custom",
             "lightTheme": {
                 "default": "#0094CE",
-                "baseColor": "#0094CE",
+                "baseColor": "#128725",
                 "baseFont": "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif",
                 "edited": true,
                 "reset": false
@@ -34,52 +35,53 @@
                 "edited": false
             },
             "customTheme": {
-                "name": "Untitled Theme 1",
+                "name": "Freya Theme",
                 "default": "#4B7930",
-                "baseColor": "#4B7930",
-                "baseFont": "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif"
+                "baseColor": "#70b62d",
+                "baseFont": "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif",
+                "reset": false
             },
             "themeState": {
                 "base-color": {
-                    "default": "#0094CE",
-                    "value": "#0094CE",
-                    "edited": false
+                    "default": "#4B7930",
+                    "value": "#70b62d",
+                    "edited": true
                 },
                 "page-titlebar-backgroundColor": {
-                    "value": "#0094CE",
-                    "edited": false
+                    "value": "#292b2d",
+                    "edited": true
                 },
                 "page-backgroundColor": {
-                    "value": "#fafafa",
-                    "edited": false
+                    "value": "#ffffff",
+                    "edited": true
                 },
                 "page-sidebar-backgroundColor": {
                     "value": "#ffffff",
-                    "edited": false
+                    "edited": true
                 },
                 "group-textColor": {
-                    "value": "#1bbfff",
-                    "edited": false
+                    "value": "#70b62d",
+                    "edited": true
                 },
                 "group-borderColor": {
-                    "value": "#ffffff",
-                    "edited": false
+                    "value": "#6d7279",
+                    "edited": true
                 },
                 "group-backgroundColor": {
                     "value": "#ffffff",
-                    "edited": false
+                    "edited": true
                 },
                 "widget-textColor": {
-                    "value": "#111111",
-                    "edited": false
+                    "value": "#292b2d",
+                    "edited": true
                 },
                 "widget-backgroundColor": {
-                    "value": "#0094ce",
-                    "edited": false
+                    "value": "#70b62d",
+                    "edited": true
                 },
                 "widget-borderColor": {
                     "value": "#ffffff",
-                    "edited": false
+                    "edited": true
                 },
                 "base-font": {
                     "value": "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif"
@@ -94,12 +96,12 @@
             }
         },
         "site": {
-            "name": "Node-RED Dashboard",
+            "name": "Freya Dashboard",
             "hideToolbar": "false",
             "allowSwipe": "false",
             "lockMenu": "false",
             "allowTempTheme": "true",
-            "dateFormat": "DD/MM/YYYY",
+            "dateFormat": "DD/MM",
             "sizes": {
                 "sx": 48,
                 "sy": 48,
@@ -117,9 +119,9 @@
         "type": "ui_group",
         "name": "Temperature",
         "tab": "9fb2621070b93c5c",
-        "order": 1,
+        "order": 2,
         "disp": true,
-        "width": "32",
+        "width": "26",
         "collapse": false,
         "className": ""
     },
@@ -128,9 +130,9 @@
         "type": "ui_group",
         "name": "Relative Humidity",
         "tab": "9fb2621070b93c5c",
-        "order": 2,
+        "order": 4,
         "disp": true,
-        "width": "32",
+        "width": "26",
         "collapse": false,
         "className": ""
     },
@@ -139,9 +141,42 @@
         "type": "ui_group",
         "name": "Lighting",
         "tab": "9fb2621070b93c5c",
+        "order": 5,
+        "disp": true,
+        "width": "26",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "065b86780da2c47f",
+        "type": "ui_group",
+        "name": "Temperature",
+        "tab": "9fb2621070b93c5c",
+        "order": 1,
+        "disp": true,
+        "width": 6,
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "30db70bef4ceda0b",
+        "type": "ui_group",
+        "name": "Humidity Settings",
+        "tab": "9fb2621070b93c5c",
         "order": 3,
         "disp": true,
-        "width": "32",
+        "width": 6,
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "0a0108947dc2a25f",
+        "type": "ui_group",
+        "name": "Testing",
+        "tab": "9fb2621070b93c5c",
+        "order": 6,
+        "disp": false,
+        "width": "26",
         "collapse": false,
         "className": ""
     },
@@ -248,10 +283,10 @@
         "type": "ui_button",
         "z": "c0a854f2e62226f7",
         "name": "",
-        "group": "d3a5c8ab2f4609d5",
+        "group": "0a0108947dc2a25f",
         "order": 3,
-        "width": 0,
-        "height": 0,
+        "width": "6",
+        "height": "1",
         "passthru": false,
         "label": "Identify",
         "tooltip": "",
@@ -390,55 +425,6 @@
         ]
     },
     {
-        "id": "7168189dcca0413c",
-        "type": "switch",
-        "z": "c0a854f2e62226f7",
-        "name": "Router",
-        "property": "payload.variable",
-        "propertyType": "msg",
-        "rules": [
-            {
-                "t": "eq",
-                "v": "temperature",
-                "vt": "str"
-            },
-            {
-                "t": "eq",
-                "v": "humidity",
-                "vt": "str"
-            },
-            {
-                "t": "eq",
-                "v": "daylight",
-                "vt": "str"
-            },
-            {
-                "t": "eq",
-                "v": "precipitation",
-                "vt": "str"
-            }
-        ],
-        "checkall": "true",
-        "repair": false,
-        "outputs": 4,
-        "x": 290,
-        "y": 580,
-        "wires": [
-            [
-                "1589282f12a5c631"
-            ],
-            [
-                "6f2821f6469e2e25"
-            ],
-            [
-                "16f818035533a75f"
-            ],
-            [
-                "e667d1e955769107"
-            ]
-        ]
-    },
-    {
         "id": "1589282f12a5c631",
         "type": "circadian core",
         "z": "c0a854f2e62226f7",
@@ -523,8 +509,8 @@
         "name": "Temperature Sensor",
         "variable": "temperature",
         "sampleinterval": "",
-        "x": 510,
-        "y": 240,
+        "x": 270,
+        "y": 220,
         "wires": [
             [
                 "8315c5acdf23410d"
@@ -625,8 +611,8 @@
         "name": "Humidity Sensor",
         "variable": "humidity",
         "sampleinterval": "",
-        "x": 520,
-        "y": 440,
+        "x": 280,
+        "y": 420,
         "wires": [
             [
                 "d44fa9863bcdba16",
@@ -778,17 +764,17 @@
         "name": "Temperature",
         "group": "4164ae76cd19a757",
         "order": 1,
-        "width": "6",
-        "height": "6",
+        "width": "5",
+        "height": "4",
         "gtype": "gage",
         "title": "",
-        "label": "°C",
-        "format": "{{value}}",
+        "label": "",
+        "format": "{{value}}°C",
         "min": "15",
         "max": "35",
         "colors": [
             "#ca3838",
-            "#00b500",
+            "#70b62d",
             "#ca3838"
         ],
         "seg1": "20",
@@ -826,25 +812,25 @@
         "name": "Humidity",
         "group": "96287ffc3fa49e02",
         "order": 1,
-        "width": "6",
-        "height": "6",
+        "width": "5",
+        "height": "4",
         "gtype": "gage",
         "title": "",
-        "label": "%",
-        "format": "{{value}}",
+        "label": "",
+        "format": "{{value}}%",
         "min": "0",
         "max": "100",
         "colors": [
             "#e6e600",
-            "#00b500",
+            "#70b62d",
             "#e6e600"
         ],
         "seg1": "40",
         "seg2": "60",
-        "diff": false,
+        "diff": true,
         "className": "",
-        "x": 660,
-        "y": 380,
+        "x": 640,
+        "y": 400,
         "wires": []
     },
     {
@@ -858,7 +844,7 @@
         "syntax": "mustache",
         "template": "{{payload.humidity}}",
         "output": "str",
-        "x": 520,
+        "x": 480,
         "y": 380,
         "wires": [
             [
@@ -874,18 +860,18 @@
         "name": "Light",
         "group": "d3a5c8ab2f4609d5",
         "order": 1,
-        "width": "6",
-        "height": "6",
+        "width": "5",
+        "height": "4",
         "gtype": "gage",
         "title": "",
-        "label": "Lux",
-        "format": "{{value}}",
+        "label": "",
+        "format": "{{value}}Lux",
         "min": "0",
         "max": "20000",
         "colors": [
-            "#00b500",
-            "#00b500",
-            "#00b500"
+            "#70b62d",
+            "#70b62d",
+            "#70b62d"
         ],
         "seg1": "40",
         "seg2": "60",
@@ -906,12 +892,12 @@
         "syntax": "mustache",
         "template": "{{payload.light}}",
         "output": "str",
-        "x": 540,
+        "x": 520,
         "y": 600,
         "wires": [
             [
                 "3fce40faa3303b97",
-                "5333522188ce3566"
+                "869cea4cfd17e8cd"
             ]
         ]
     },
@@ -922,25 +908,25 @@
         "name": "Temperature Chart",
         "group": "4164ae76cd19a757",
         "order": 2,
-        "width": "26",
-        "height": "5",
+        "width": "21",
+        "height": "4",
         "label": "",
         "chartType": "line",
         "legend": "false",
-        "xformat": "auto",
+        "xformat": "HH:mm",
         "interpolate": "linear",
         "nodata": "",
         "dot": false,
         "ymin": "",
         "ymax": "",
-        "removeOlder": "24",
+        "removeOlder": "36",
         "removeOlderPoints": "",
         "removeOlderUnit": "3600",
         "cutout": 0,
         "useOneColor": false,
         "useUTC": false,
         "colors": [
-            "#1f77b4",
+            "#70b62d",
             "#aec7e8",
             "#ff7f0e",
             "#2ca02c",
@@ -966,25 +952,25 @@
         "name": "Humidity Chart",
         "group": "96287ffc3fa49e02",
         "order": 2,
-        "width": "26",
-        "height": "5",
+        "width": "21",
+        "height": "4",
         "label": "",
         "chartType": "line",
         "legend": "false",
-        "xformat": "auto",
+        "xformat": "HH:mm",
         "interpolate": "linear",
         "nodata": "",
         "dot": false,
         "ymin": "",
         "ymax": "",
-        "removeOlder": "24",
+        "removeOlder": "36",
         "removeOlderPoints": "",
         "removeOlderUnit": "3600",
         "cutout": 0,
         "useOneColor": false,
         "useUTC": false,
         "colors": [
-            "#1f77b4",
+            "#70b62d",
             "#aec7e8",
             "#ff7f0e",
             "#2ca02c",
@@ -997,8 +983,8 @@
         "outputs": 1,
         "useDifferentColor": false,
         "className": "",
-        "x": 680,
-        "y": 340,
+        "x": 660,
+        "y": 360,
         "wires": [
             []
         ]
@@ -1007,28 +993,28 @@
         "id": "5333522188ce3566",
         "type": "ui_chart",
         "z": "c0a854f2e62226f7",
-        "name": "",
+        "name": "Lighting Chart",
         "group": "d3a5c8ab2f4609d5",
         "order": 2,
-        "width": "26",
-        "height": "5",
-        "label": "Lighting Chart",
+        "width": "21",
+        "height": "4",
+        "label": "",
         "chartType": "line",
         "legend": "false",
-        "xformat": "auto",
+        "xformat": "HH:mm",
         "interpolate": "linear",
         "nodata": "",
         "dot": false,
         "ymin": "",
         "ymax": "",
-        "removeOlder": "24",
+        "removeOlder": "36",
         "removeOlderPoints": "",
         "removeOlderUnit": "3600",
         "cutout": 0,
         "useOneColor": false,
         "useUTC": false,
         "colors": [
-            "#1f77b4",
+            "#70b62d",
             "#aec7e8",
             "#ffd70f",
             "#2ca02c",
@@ -1043,6 +1029,191 @@
         "className": "",
         "x": 700,
         "y": 560,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "9fa9f492b476ccac",
+        "type": "debug",
+        "z": "c0a854f2e62226f7",
+        "name": "debug 1",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 440,
+        "y": 60,
+        "wires": []
+    },
+    {
+        "id": "68778245ec10f3ab",
+        "type": "environment sensor",
+        "z": "c0a854f2e62226f7",
+        "name": "",
+        "variable": "all",
+        "sampleinterval": "",
+        "x": 270,
+        "y": 60,
+        "wires": [
+            [
+                "9fa9f492b476ccac"
+            ],
+            []
+        ]
+    },
+    {
+        "id": "869cea4cfd17e8cd",
+        "type": "function",
+        "z": "c0a854f2e62226f7",
+        "name": "ui_control",
+        "func": "// msg.payload = your normal data (e.g. a number or {series[], data[][], labels[]})\n/*msg.ui_control = {\n    options: {\n        scales: {\n            yAxes: [{\n                type: 'logarithmic',       // switch to log scale\n                scaleLabel: {\n                    display: true,\n                    labelString: 'Value (log)'\n                },\n                min: 0.05,                 // hard lower bound (moonlight)\n                max: 120000,               // hard upper bound (bright daylight)\n            }]\n        }\n    }\n};*/\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 540,
+        "y": 560,
+        "wires": [
+            [
+                "5333522188ce3566"
+            ]
+        ]
+    },
+    {
+        "id": "bb3a7072349fdd5c",
+        "type": "ui_numeric",
+        "z": "c0a854f2e62226f7",
+        "name": "Min Temp",
+        "label": "Minimum (°C)",
+        "tooltip": "The absolute minimum temperature",
+        "group": "065b86780da2c47f",
+        "order": 0,
+        "width": "6",
+        "height": "2",
+        "wrap": false,
+        "passthru": true,
+        "topic": "topic",
+        "topicType": "msg",
+        "format": "{{value}}",
+        "min": 0,
+        "max": "65",
+        "step": 1,
+        "className": "",
+        "x": 300,
+        "y": 280,
+        "wires": [
+            [
+                "1589282f12a5c631"
+            ]
+        ]
+    },
+    {
+        "id": "cdc66f1d462019e7",
+        "type": "ui_numeric",
+        "z": "c0a854f2e62226f7",
+        "name": "Max Temp",
+        "label": "Maximum (°C)",
+        "tooltip": "The absolute maximum temperature",
+        "group": "065b86780da2c47f",
+        "order": 1,
+        "width": "6",
+        "height": "2",
+        "wrap": false,
+        "passthru": true,
+        "topic": "topic",
+        "topicType": "msg",
+        "format": "{{value}}",
+        "min": 0,
+        "max": "65",
+        "step": 1,
+        "className": "",
+        "x": 290,
+        "y": 320,
+        "wires": [
+            [
+                "1589282f12a5c631"
+            ]
+        ]
+    },
+    {
+        "id": "4faeaeb8f72482b9",
+        "type": "ui_numeric",
+        "z": "c0a854f2e62226f7",
+        "name": "Min Hum",
+        "label": "Minimum (%)",
+        "tooltip": "The absolute minimum humidity",
+        "group": "30db70bef4ceda0b",
+        "order": 0,
+        "width": "6",
+        "height": "2",
+        "wrap": false,
+        "passthru": true,
+        "topic": "topic",
+        "topicType": "msg",
+        "format": "{{value}}",
+        "min": 0,
+        "max": "100",
+        "step": 1,
+        "className": "",
+        "x": 300,
+        "y": 480,
+        "wires": [
+            [
+                "6f2821f6469e2e25"
+            ]
+        ]
+    },
+    {
+        "id": "02601e600ae949e6",
+        "type": "ui_numeric",
+        "z": "c0a854f2e62226f7",
+        "name": "Max Hum",
+        "label": "Maximum (%)",
+        "tooltip": "The absolute maximum humditiy",
+        "group": "30db70bef4ceda0b",
+        "order": 1,
+        "width": "6",
+        "height": "2",
+        "wrap": false,
+        "passthru": true,
+        "topic": "topic",
+        "topicType": "msg",
+        "format": "{{value}}",
+        "min": 0,
+        "max": "100",
+        "step": 1,
+        "className": "",
+        "x": 300,
+        "y": 520,
+        "wires": [
+            [
+                "6f2821f6469e2e25"
+            ]
+        ]
+    },
+    {
+        "id": "889b94e2a7c7488d",
+        "type": "ui_template",
+        "z": "c0a854f2e62226f7",
+        "group": "",
+        "name": "Freya Theme",
+        "order": 0,
+        "width": 0,
+        "height": 0,
+        "format": "<style>\n    :root {\n    --freya_dark_green: #70B62D;\n    --freya_light_green: #A2CA6F;\n    --freya_dark_blue: #00A29A;\n    --freya_light_blue: #92D4F2;\n    --freya_dark_grey: #6D7279;\n    --freya_light_grey: #e1e2e4;\n    --freya_black: #292d2b;\n    }\n    \n    /* 1. Change the overall page background */\n    body.nr-dashboard-theme {\n        background: --freya_light_grey !important;\n    }\n\n    /* 2. Tweak each widget card */\n    .nr-dashboard-theme ui-card-panel {\n        background: --freya_dark_green !important;\n        border-radius: 8px !important;\n        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4) !important;\n    }\n\n    /* 3. Override button styles */\n    .nr-dashboard-theme .nr-dashboard-button .md-button {\n        font-weight: 600 !important;\n        text-transform: uppercase !important;\n    }\n\n    .nr-dashboard-theme .nr-dashboard-button .md-button:hover {\n        background: rgba(255, 255, 255, 0.1) !important;\n    }\n\n    /* 4. Custom font for gauges, charts, etc. */\n    .nr-dashboard-theme .md-display-1,\n    .nr-dashboard-theme .md-display-2 {\n        font-family: \"Source Code Pro\", monospace !important;\n    }\n</style>",
+        "storeOutMessages": true,
+        "fwdInMessages": true,
+        "resendOnRefresh": true,
+        "templateScope": "global",
+        "className": "",
+        "x": 230,
+        "y": 720,
         "wires": [
             []
         ]

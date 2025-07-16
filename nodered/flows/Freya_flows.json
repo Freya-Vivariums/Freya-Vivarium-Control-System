@@ -141,7 +141,7 @@
         "type": "ui_group",
         "name": "Lighting",
         "tab": "9fb2621070b93c5c",
-        "order": 5,
+        "order": 6,
         "disp": true,
         "width": "26",
         "collapse": false,
@@ -174,9 +174,31 @@
         "type": "ui_group",
         "name": "Testing",
         "tab": "9fb2621070b93c5c",
-        "order": 6,
+        "order": 8,
         "disp": false,
         "width": "26",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "e56596e4ddca0921",
+        "type": "ui_group",
+        "name": "Pressure (hPa)",
+        "tab": "9fb2621070b93c5c",
+        "order": 7,
+        "disp": true,
+        "width": "26",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "3a2a0cfe4ff01890",
+        "type": "ui_group",
+        "name": "Lighting settings",
+        "tab": "9fb2621070b93c5c",
+        "order": 5,
+        "disp": true,
+        "width": 6,
         "collapse": false,
         "className": ""
     },
@@ -361,7 +383,7 @@
         "z": "c0a854f2e62226f7",
         "name": "",
         "x": 750,
-        "y": 460,
+        "y": 500,
         "wires": [
             [
                 "8a52bc9eba3c0ada"
@@ -397,7 +419,7 @@
         "z": "c0a854f2e62226f7",
         "name": "",
         "x": 750,
-        "y": 680,
+        "y": 740,
         "wires": [
             [
                 "a030ee2f8804a863",
@@ -429,8 +451,8 @@
         "type": "circadian core",
         "z": "c0a854f2e62226f7",
         "name": "",
-        "x": 520,
-        "y": 300,
+        "x": 500,
+        "y": 260,
         "wires": [
             [
                 "144a01e7f0dd298d"
@@ -445,7 +467,7 @@
         "type": "circadian core",
         "z": "c0a854f2e62226f7",
         "name": "",
-        "x": 520,
+        "x": 500,
         "y": 500,
         "wires": [
             [
@@ -461,8 +483,8 @@
         "type": "circadian core",
         "z": "c0a854f2e62226f7",
         "name": "",
-        "x": 520,
-        "y": 720,
+        "x": 500,
+        "y": 740,
         "wires": [
             [
                 "eac6b1e0a11d0689"
@@ -493,8 +515,8 @@
         "type": "status aggregator",
         "z": "c0a854f2e62226f7",
         "name": "Temperature Status",
-        "x": 1130,
-        "y": 400,
+        "x": 990,
+        "y": 340,
         "wires": [
             [
                 "3a5104b6f4842907"
@@ -509,11 +531,12 @@
         "name": "Temperature Sensor",
         "variable": "temperature",
         "sampleinterval": "",
-        "x": 270,
-        "y": 220,
+        "x": 290,
+        "y": 180,
         "wires": [
             [
-                "8315c5acdf23410d"
+                "8315c5acdf23410d",
+                "144a01e7f0dd298d"
             ],
             [
                 "00cfd341d4986698"
@@ -528,8 +551,8 @@
         "actuator": "cooler",
         "channel": "2",
         "mode": "digital",
-        "x": 970,
-        "y": 300,
+        "x": 950,
+        "y": 280,
         "wires": [
             [
                 "00cfd341d4986698"
@@ -541,8 +564,8 @@
         "type": "system actuators",
         "z": "c0a854f2e62226f7",
         "name": "Humidifier",
-        "x": 980,
-        "y": 500,
+        "x": 940,
+        "y": 480,
         "wires": [
             [
                 "65ec410c37b483e8"
@@ -554,8 +577,8 @@
         "type": "system actuators",
         "z": "c0a854f2e62226f7",
         "name": "Main Lights",
-        "x": 990,
-        "y": 640,
+        "x": 950,
+        "y": 700,
         "wires": [
             [
                 "2f6bd800c9979c6c"
@@ -567,8 +590,8 @@
         "type": "system actuators",
         "z": "c0a854f2e62226f7",
         "name": "Auxilary Lights",
-        "x": 1000,
-        "y": 700,
+        "x": 960,
+        "y": 760,
         "wires": [
             [
                 "2f6bd800c9979c6c"
@@ -596,8 +619,8 @@
         "actuator": "heater",
         "channel": "1",
         "mode": "digital",
-        "x": 970,
-        "y": 240,
+        "x": 950,
+        "y": 220,
         "wires": [
             [
                 "00cfd341d4986698"
@@ -611,7 +634,7 @@
         "name": "Humidity Sensor",
         "variable": "humidity",
         "sampleinterval": "",
-        "x": 280,
+        "x": 300,
         "y": 420,
         "wires": [
             [
@@ -629,7 +652,7 @@
         "z": "c0a854f2e62226f7",
         "name": "Light Sensor",
         "variable": "light",
-        "x": 530,
+        "x": 310,
         "y": 660,
         "wires": [
             [
@@ -646,8 +669,8 @@
         "type": "status aggregator",
         "z": "c0a854f2e62226f7",
         "name": "Humidity Status",
-        "x": 1120,
-        "y": 580,
+        "x": 960,
+        "y": 560,
         "wires": [
             [
                 "3a5104b6f4842907"
@@ -660,8 +683,8 @@
         "type": "status aggregator",
         "z": "c0a854f2e62226f7",
         "name": "Lighting Status",
-        "x": 1120,
-        "y": 780,
+        "x": 960,
+        "y": 840,
         "wires": [
             [
                 "3a5104b6f4842907"
@@ -718,8 +741,8 @@
         "topic": "set",
         "payload": "{\"heater\":\"off\", \"cooler\":\"on\"}",
         "payloadType": "json",
-        "x": 840,
-        "y": 180,
+        "x": 1000,
+        "y": 120,
         "wires": [
             [
                 "c33f1595ae47213c",
@@ -748,8 +771,8 @@
         "topic": "set",
         "payload": "{\"heater\":\"on\", \"cooler\":\"off\"}",
         "payloadType": "json",
-        "x": 840,
-        "y": 140,
+        "x": 1020,
+        "y": 60,
         "wires": [
             [
                 "c33f1595ae47213c",
@@ -781,7 +804,7 @@
         "seg2": "25",
         "diff": true,
         "className": "",
-        "x": 650,
+        "x": 730,
         "y": 180,
         "wires": []
     },
@@ -829,8 +852,8 @@
         "seg2": "60",
         "diff": true,
         "className": "",
-        "x": 640,
-        "y": 400,
+        "x": 720,
+        "y": 420,
         "wires": []
     },
     {
@@ -845,7 +868,7 @@
         "template": "{{payload.humidity}}",
         "output": "str",
         "x": 480,
-        "y": 380,
+        "y": 400,
         "wires": [
             [
                 "bb7e70dbeef32e02",
@@ -877,7 +900,7 @@
         "seg2": "60",
         "diff": false,
         "className": "",
-        "x": 670,
+        "x": 710,
         "y": 600,
         "wires": []
     },
@@ -892,8 +915,8 @@
         "syntax": "mustache",
         "template": "{{payload.light}}",
         "output": "str",
-        "x": 520,
-        "y": 600,
+        "x": 480,
+        "y": 620,
         "wires": [
             [
                 "3fce40faa3303b97",
@@ -939,7 +962,7 @@
         "outputs": 1,
         "useDifferentColor": false,
         "className": "",
-        "x": 670,
+        "x": 750,
         "y": 140,
         "wires": [
             []
@@ -983,8 +1006,8 @@
         "outputs": 1,
         "useDifferentColor": false,
         "className": "",
-        "x": 660,
-        "y": 360,
+        "x": 740,
+        "y": 380,
         "wires": [
             []
         ]
@@ -1027,40 +1050,24 @@
         "outputs": 1,
         "useDifferentColor": false,
         "className": "",
-        "x": 700,
+        "x": 740,
         "y": 560,
         "wires": [
             []
         ]
     },
     {
-        "id": "9fa9f492b476ccac",
-        "type": "debug",
-        "z": "c0a854f2e62226f7",
-        "name": "debug 1",
-        "active": false,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "false",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 440,
-        "y": 60,
-        "wires": []
-    },
-    {
         "id": "68778245ec10f3ab",
         "type": "environment sensor",
         "z": "c0a854f2e62226f7",
-        "name": "",
-        "variable": "all",
+        "name": "Pressure",
+        "variable": "pressure",
         "sampleinterval": "",
-        "x": 270,
+        "x": 320,
         "y": 60,
         "wires": [
             [
-                "9fa9f492b476ccac"
+                "c6e680047593b7a6"
             ],
             []
         ]
@@ -1077,8 +1084,8 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 540,
-        "y": 560,
+        "x": 480,
+        "y": 580,
         "wires": [
             [
                 "5333522188ce3566"
@@ -1105,8 +1112,8 @@
         "max": "65",
         "step": 1,
         "className": "",
-        "x": 300,
-        "y": 280,
+        "x": 320,
+        "y": 240,
         "wires": [
             [
                 "1589282f12a5c631"
@@ -1133,8 +1140,8 @@
         "max": "65",
         "step": 1,
         "className": "",
-        "x": 290,
-        "y": 320,
+        "x": 310,
+        "y": 280,
         "wires": [
             [
                 "1589282f12a5c631"
@@ -1161,7 +1168,7 @@
         "max": "100",
         "step": 1,
         "className": "",
-        "x": 300,
+        "x": 320,
         "y": 480,
         "wires": [
             [
@@ -1189,7 +1196,7 @@
         "max": "100",
         "step": 1,
         "className": "",
-        "x": 300,
+        "x": 320,
         "y": 520,
         "wires": [
             [
@@ -1198,24 +1205,151 @@
         ]
     },
     {
-        "id": "889b94e2a7c7488d",
-        "type": "ui_template",
+        "id": "c6e680047593b7a6",
+        "type": "template",
         "z": "c0a854f2e62226f7",
-        "group": "",
-        "name": "Freya Theme",
-        "order": 0,
-        "width": 0,
-        "height": 0,
-        "format": "<style>\n    :root {\n    --freya_dark_green: #70B62D;\n    --freya_light_green: #A2CA6F;\n    --freya_dark_blue: #00A29A;\n    --freya_light_blue: #92D4F2;\n    --freya_dark_grey: #6D7279;\n    --freya_light_grey: #e1e2e4;\n    --freya_black: #292d2b;\n    }\n    \n    /* 1. Change the overall page background */\n    body.nr-dashboard-theme {\n        background: --freya_light_grey !important;\n    }\n\n    /* 2. Tweak each widget card */\n    .nr-dashboard-theme ui-card-panel {\n        background: --freya_dark_green !important;\n        border-radius: 8px !important;\n        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4) !important;\n    }\n\n    /* 3. Override button styles */\n    .nr-dashboard-theme .nr-dashboard-button .md-button {\n        font-weight: 600 !important;\n        text-transform: uppercase !important;\n    }\n\n    .nr-dashboard-theme .nr-dashboard-button .md-button:hover {\n        background: rgba(255, 255, 255, 0.1) !important;\n    }\n\n    /* 4. Custom font for gauges, charts, etc. */\n    .nr-dashboard-theme .md-display-1,\n    .nr-dashboard-theme .md-display-2 {\n        font-family: \"Source Code Pro\", monospace !important;\n    }\n</style>",
-        "storeOutMessages": true,
-        "fwdInMessages": true,
-        "resendOnRefresh": true,
-        "templateScope": "global",
+        "name": "",
+        "field": "payload",
+        "fieldType": "msg",
+        "format": "handlebars",
+        "syntax": "mustache",
+        "template": "{{payload.pressure}}",
+        "output": "str",
+        "x": 480,
+        "y": 60,
+        "wires": [
+            [
+                "4b8cc06ceccc5dd8",
+                "f06eb5d2afb5bbd5"
+            ]
+        ]
+    },
+    {
+        "id": "4b8cc06ceccc5dd8",
+        "type": "ui_gauge",
+        "z": "c0a854f2e62226f7",
+        "name": "Pressure",
+        "group": "e56596e4ddca0921",
+        "order": 1,
+        "width": "5",
+        "height": "4",
+        "gtype": "gage",
+        "title": "",
+        "label": "",
+        "format": "{{value}}hPa",
+        "min": "980",
+        "max": "1400",
+        "colors": [
+            "#ca3838",
+            "#70b62d",
+            "#ca3838"
+        ],
+        "seg1": "1000",
+        "seg2": "1200",
+        "diff": true,
         "className": "",
-        "x": 230,
-        "y": 720,
+        "x": 720,
+        "y": 80,
+        "wires": []
+    },
+    {
+        "id": "f06eb5d2afb5bbd5",
+        "type": "ui_chart",
+        "z": "c0a854f2e62226f7",
+        "name": "Pressure Chart",
+        "group": "e56596e4ddca0921",
+        "order": 2,
+        "width": "21",
+        "height": "4",
+        "label": "",
+        "chartType": "line",
+        "legend": "false",
+        "xformat": "HH:mm",
+        "interpolate": "linear",
+        "nodata": "",
+        "dot": false,
+        "ymin": "980",
+        "ymax": "1020",
+        "removeOlder": "36",
+        "removeOlderPoints": "",
+        "removeOlderUnit": "3600",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#70b62d",
+            "#aec7e8",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "outputs": 1,
+        "useDifferentColor": false,
+        "className": "",
+        "x": 740,
+        "y": 40,
         "wires": [
             []
+        ]
+    },
+    {
+        "id": "988ba27f60cd6e08",
+        "type": "ui_numeric",
+        "z": "c0a854f2e62226f7",
+        "name": "",
+        "label": "Lighting a",
+        "tooltip": "",
+        "group": "3a2a0cfe4ff01890",
+        "order": 1,
+        "width": "6",
+        "height": "2",
+        "wrap": false,
+        "passthru": true,
+        "topic": "topic",
+        "topicType": "msg",
+        "format": "{{value}}",
+        "min": 0,
+        "max": 10,
+        "step": 1,
+        "className": "",
+        "x": 320,
+        "y": 720,
+        "wires": [
+            [
+                "16f818035533a75f"
+            ]
+        ]
+    },
+    {
+        "id": "d8f88ba23e8f361f",
+        "type": "ui_numeric",
+        "z": "c0a854f2e62226f7",
+        "name": "",
+        "label": "Lighting b",
+        "tooltip": "",
+        "group": "3a2a0cfe4ff01890",
+        "order": 2,
+        "width": "6",
+        "height": "2",
+        "wrap": false,
+        "passthru": true,
+        "topic": "topic",
+        "topicType": "msg",
+        "format": "{{value}}",
+        "min": 0,
+        "max": 10,
+        "step": 1,
+        "className": "",
+        "x": 320,
+        "y": 760,
+        "wires": [
+            [
+                "16f818035533a75f"
+            ]
         ]
     }
 ]

@@ -2,7 +2,7 @@
     {
         "id": "c0a854f2e62226f7",
         "type": "tab",
-        "label": "Freya-v0.1.13",
+        "label": "Freya-v0.1.14",
         "disabled": false,
         "info": "",
         "env": []
@@ -150,7 +150,7 @@
     {
         "id": "065b86780da2c47f",
         "type": "ui_group",
-        "name": "Temperature",
+        "name": "Temperature Settings",
         "tab": "9fb2621070b93c5c",
         "order": 1,
         "disp": true,
@@ -549,7 +549,7 @@
         "z": "c0a854f2e62226f7",
         "name": "Fans",
         "actuator": "cooler",
-        "channel": "2",
+        "channel": "5",
         "mode": "digital",
         "x": 950,
         "y": 280,
@@ -577,6 +577,9 @@
         "type": "system actuators",
         "z": "c0a854f2e62226f7",
         "name": "Main Lights",
+        "actuator": "",
+        "channel": "1",
+        "mode": "digital",
         "x": 950,
         "y": 700,
         "wires": [
@@ -590,6 +593,9 @@
         "type": "system actuators",
         "z": "c0a854f2e62226f7",
         "name": "Auxilary Lights",
+        "actuator": "",
+        "channel": "6",
+        "mode": "digital",
         "x": 960,
         "y": 760,
         "wires": [
@@ -603,6 +609,9 @@
         "type": "system actuators",
         "z": "c0a854f2e62226f7",
         "name": "Rain Pump",
+        "actuator": "",
+        "channel": "3",
+        "mode": "digital",
         "x": 990,
         "y": 900,
         "wires": [
@@ -721,36 +730,6 @@
         ]
     },
     {
-        "id": "facb742b57dd833f",
-        "type": "inject",
-        "z": "c0a854f2e62226f7",
-        "name": "Cool down",
-        "props": [
-            {
-                "p": "topic",
-                "vt": "str"
-            },
-            {
-                "p": "payload"
-            }
-        ],
-        "repeat": "",
-        "crontab": "",
-        "once": false,
-        "onceDelay": 0.1,
-        "topic": "set",
-        "payload": "{\"heater\":\"off\", \"cooler\":\"on\"}",
-        "payloadType": "json",
-        "x": 1000,
-        "y": 120,
-        "wires": [
-            [
-                "c33f1595ae47213c",
-                "0c6df0b11131a8c9"
-            ]
-        ]
-    },
-    {
         "id": "bc7ce5f9fae1487d",
         "type": "inject",
         "z": "c0a854f2e62226f7",
@@ -771,7 +750,7 @@
         "topic": "set",
         "payload": "{\"heater\":\"on\", \"cooler\":\"off\"}",
         "payloadType": "json",
-        "x": 1020,
+        "x": 980,
         "y": 60,
         "wires": [
             [
@@ -1102,7 +1081,7 @@
         "group": "065b86780da2c47f",
         "order": 0,
         "width": "6",
-        "height": "2",
+        "height": "1",
         "wrap": false,
         "passthru": true,
         "topic": "topic",
@@ -1158,7 +1137,7 @@
         "group": "30db70bef4ceda0b",
         "order": 0,
         "width": "6",
-        "height": "2",
+        "height": "1",
         "wrap": false,
         "passthru": true,
         "topic": "topic",
@@ -1238,14 +1217,14 @@
         "label": "",
         "format": "{{value}}hPa",
         "min": "980",
-        "max": "1400",
+        "max": "1040",
         "colors": [
             "#ca3838",
             "#70b62d",
             "#ca3838"
         ],
         "seg1": "1000",
-        "seg2": "1200",
+        "seg2": "1020",
         "diff": true,
         "className": "",
         "x": 720,
@@ -1268,8 +1247,8 @@
         "interpolate": "linear",
         "nodata": "",
         "dot": false,
-        "ymin": "980",
-        "ymax": "1020",
+        "ymin": "",
+        "ymax": "",
         "removeOlder": "36",
         "removeOlderPoints": "",
         "removeOlderUnit": "3600",
@@ -1306,7 +1285,7 @@
         "group": "3a2a0cfe4ff01890",
         "order": 1,
         "width": "6",
-        "height": "2",
+        "height": "1",
         "wrap": false,
         "passthru": true,
         "topic": "topic",
@@ -1349,6 +1328,120 @@
         "wires": [
             [
                 "16f818035533a75f"
+            ]
+        ]
+    },
+    {
+        "id": "a7e1327f07ec723e",
+        "type": "inject",
+        "z": "c0a854f2e62226f7",
+        "name": "all off",
+        "props": [
+            {
+                "p": "topic",
+                "vt": "str"
+            },
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "set",
+        "payload": "{\"heater\":\"off\", \"cooler\":\"off\"}",
+        "payloadType": "json",
+        "x": 990,
+        "y": 20,
+        "wires": [
+            [
+                "c33f1595ae47213c",
+                "0c6df0b11131a8c9"
+            ]
+        ]
+    },
+    {
+        "id": "25f790088c680ed4",
+        "type": "ui_button",
+        "z": "c0a854f2e62226f7",
+        "name": "",
+        "group": "065b86780da2c47f",
+        "order": 3,
+        "width": "6",
+        "height": "1",
+        "passthru": false,
+        "label": "Test",
+        "tooltip": "",
+        "color": "#292B2D",
+        "bgcolor": "#A2CA6F",
+        "className": "",
+        "icon": "",
+        "payload": "{\"test\":true}",
+        "payloadType": "json",
+        "topic": "topic",
+        "topicType": "msg",
+        "x": 330,
+        "y": 320,
+        "wires": [
+            [
+                "144a01e7f0dd298d"
+            ]
+        ]
+    },
+    {
+        "id": "5d01626e085f5099",
+        "type": "ui_button",
+        "z": "c0a854f2e62226f7",
+        "name": "",
+        "group": "30db70bef4ceda0b",
+        "order": 3,
+        "width": "6",
+        "height": "1",
+        "passthru": false,
+        "label": "Test",
+        "tooltip": "",
+        "color": "#292B2D",
+        "bgcolor": "#A2CA6F",
+        "className": "",
+        "icon": "",
+        "payload": "{\"test\":true}",
+        "payloadType": "json",
+        "topic": "topic",
+        "topicType": "msg",
+        "x": 330,
+        "y": 560,
+        "wires": [
+            [
+                "d44fa9863bcdba16"
+            ]
+        ]
+    },
+    {
+        "id": "46bf2965b1a49ff7",
+        "type": "ui_button",
+        "z": "c0a854f2e62226f7",
+        "name": "",
+        "group": "3a2a0cfe4ff01890",
+        "order": 3,
+        "width": "6",
+        "height": "1",
+        "passthru": false,
+        "label": "Test",
+        "tooltip": "",
+        "color": "#292B2D",
+        "bgcolor": "#A2CA6F",
+        "className": "",
+        "icon": "",
+        "payload": "{\"test\":true}",
+        "payloadType": "json",
+        "topic": "topic",
+        "topicType": "msg",
+        "x": 330,
+        "y": 800,
+        "wires": [
+            [
+                "eac6b1e0a11d0689"
             ]
         ]
     }

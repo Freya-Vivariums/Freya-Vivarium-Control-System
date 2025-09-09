@@ -435,8 +435,8 @@
         "type": "precipitation controller",
         "z": "c0a854f2e62226f7",
         "name": "",
-        "x": 760,
-        "y": 900,
+        "x": 720,
+        "y": 920,
         "wires": [
             [
                 "38417f951ba2e8cf"
@@ -499,8 +499,8 @@
         "type": "circadian core",
         "z": "c0a854f2e62226f7",
         "name": "",
-        "x": 540,
-        "y": 900,
+        "x": 500,
+        "y": 920,
         "wires": [
             [
                 "5c23dfdcc1dc077c"
@@ -577,7 +577,7 @@
         "type": "system actuators",
         "z": "c0a854f2e62226f7",
         "name": "Main Lights",
-        "actuator": "",
+        "actuator": "lighting",
         "channel": "1",
         "mode": "digital",
         "x": 950,
@@ -612,8 +612,8 @@
         "actuator": "",
         "channel": "3",
         "mode": "digital",
-        "x": 990,
-        "y": 900,
+        "x": 950,
+        "y": 920,
         "wires": [
             [
                 "edff2574530c85bb"
@@ -706,8 +706,8 @@
         "type": "status aggregator",
         "z": "c0a854f2e62226f7",
         "name": "Precipitation Status",
-        "x": 1130,
-        "y": 960,
+        "x": 970,
+        "y": 980,
         "wires": [
             [
                 "3a5104b6f4842907"
@@ -727,36 +727,6 @@
                 "93869b02738cc142"
             ],
             []
-        ]
-    },
-    {
-        "id": "bc7ce5f9fae1487d",
-        "type": "inject",
-        "z": "c0a854f2e62226f7",
-        "name": "Warm up",
-        "props": [
-            {
-                "p": "topic",
-                "vt": "str"
-            },
-            {
-                "p": "payload"
-            }
-        ],
-        "repeat": "",
-        "crontab": "",
-        "once": false,
-        "onceDelay": 0.1,
-        "topic": "set",
-        "payload": "{\"heater\":\"on\", \"cooler\":\"off\"}",
-        "payloadType": "json",
-        "x": 980,
-        "y": 60,
-        "wires": [
-            [
-                "c33f1595ae47213c",
-                "0c6df0b11131a8c9"
-            ]
         ]
     },
     {
@@ -1332,36 +1302,6 @@
         ]
     },
     {
-        "id": "a7e1327f07ec723e",
-        "type": "inject",
-        "z": "c0a854f2e62226f7",
-        "name": "all off",
-        "props": [
-            {
-                "p": "topic",
-                "vt": "str"
-            },
-            {
-                "p": "payload"
-            }
-        ],
-        "repeat": "",
-        "crontab": "",
-        "once": false,
-        "onceDelay": 0.1,
-        "topic": "set",
-        "payload": "{\"heater\":\"off\", \"cooler\":\"off\"}",
-        "payloadType": "json",
-        "x": 990,
-        "y": 20,
-        "wires": [
-            [
-                "c33f1595ae47213c",
-                "0c6df0b11131a8c9"
-            ]
-        ]
-    },
-    {
         "id": "25f790088c680ed4",
         "type": "ui_button",
         "z": "c0a854f2e62226f7",
@@ -1442,6 +1382,64 @@
         "wires": [
             [
                 "eac6b1e0a11d0689"
+            ]
+        ]
+    },
+    {
+        "id": "d3ad415135309532",
+        "type": "inject",
+        "z": "c0a854f2e62226f7",
+        "name": "On",
+        "props": [
+            {
+                "p": "topic",
+                "vt": "str"
+            },
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "set",
+        "payload": "{\"lighting\":\"on\"}",
+        "payloadType": "json",
+        "x": 790,
+        "y": 660,
+        "wires": [
+            [
+                "a030ee2f8804a863"
+            ]
+        ]
+    },
+    {
+        "id": "c41f0f2407d23d90",
+        "type": "inject",
+        "z": "c0a854f2e62226f7",
+        "name": "Off",
+        "props": [
+            {
+                "p": "topic",
+                "vt": "str"
+            },
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "set",
+        "payload": "{\"lighting\":\"off\"}",
+        "payloadType": "json",
+        "x": 790,
+        "y": 700,
+        "wires": [
+            [
+                "a030ee2f8804a863"
             ]
         ]
     }

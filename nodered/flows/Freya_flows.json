@@ -2,7 +2,7 @@
     {
         "id": "c0a854f2e62226f7",
         "type": "tab",
-        "label": "Freya-v0.1.14",
+        "label": "Freya-v0.1.16",
         "disabled": false,
         "info": "",
         "env": []
@@ -174,9 +174,9 @@
         "type": "ui_group",
         "name": "Testing",
         "tab": "9fb2621070b93c5c",
-        "order": 8,
+        "order": 9,
         "disp": false,
-        "width": "26",
+        "width": "32",
         "collapse": false,
         "className": ""
     },
@@ -185,7 +185,7 @@
         "type": "ui_group",
         "name": "Pressure (hPa)",
         "tab": "9fb2621070b93c5c",
-        "order": 7,
+        "order": 8,
         "disp": true,
         "width": "26",
         "collapse": false,
@@ -201,6 +201,57 @@
         "width": 6,
         "collapse": false,
         "className": ""
+    },
+    {
+        "id": "cf4c231f9ae462c1",
+        "type": "ui_group",
+        "name": "Pressure settings",
+        "tab": "9fb2621070b93c5c",
+        "order": 7,
+        "disp": true,
+        "width": 6,
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "6b1e9699f263a708",
+        "type": "ui_spacer",
+        "z": "c0a854f2e62226f7",
+        "name": "spacer",
+        "group": "cf4c231f9ae462c1",
+        "order": 1,
+        "width": "1",
+        "height": "3"
+    },
+    {
+        "id": "dc9a9ced48788b94",
+        "type": "ui_spacer",
+        "z": "c0a854f2e62226f7",
+        "name": "spacer",
+        "group": "065b86780da2c47f",
+        "order": 3,
+        "width": "6",
+        "height": "1"
+    },
+    {
+        "id": "136be5538479f081",
+        "type": "ui_spacer",
+        "z": "c0a854f2e62226f7",
+        "name": "spacer",
+        "group": "30db70bef4ceda0b",
+        "order": 3,
+        "width": 1,
+        "height": 1
+    },
+    {
+        "id": "e617b04961438983",
+        "type": "ui_spacer",
+        "z": "c0a854f2e62226f7",
+        "name": "spacer",
+        "group": "3a2a0cfe4ff01890",
+        "order": 3,
+        "width": "6",
+        "height": "1"
     },
     {
         "id": "93869b02738cc142",
@@ -419,7 +470,7 @@
         "z": "c0a854f2e62226f7",
         "name": "",
         "x": 750,
-        "y": 740,
+        "y": 940,
         "wires": [
             [
                 "a030ee2f8804a863",
@@ -435,8 +486,8 @@
         "type": "precipitation controller",
         "z": "c0a854f2e62226f7",
         "name": "",
-        "x": 720,
-        "y": 920,
+        "x": 740,
+        "y": 660,
         "wires": [
             [
                 "38417f951ba2e8cf"
@@ -484,7 +535,7 @@
         "z": "c0a854f2e62226f7",
         "name": "",
         "x": 500,
-        "y": 740,
+        "y": 940,
         "wires": [
             [
                 "eac6b1e0a11d0689"
@@ -500,7 +551,7 @@
         "z": "c0a854f2e62226f7",
         "name": "",
         "x": 500,
-        "y": 920,
+        "y": 660,
         "wires": [
             [
                 "5c23dfdcc1dc077c"
@@ -581,7 +632,7 @@
         "channel": "1",
         "mode": "digital",
         "x": 950,
-        "y": 700,
+        "y": 900,
         "wires": [
             [
                 "2f6bd800c9979c6c"
@@ -593,11 +644,11 @@
         "type": "system actuators",
         "z": "c0a854f2e62226f7",
         "name": "Auxilary Lights",
-        "actuator": "",
+        "actuator": "auxLighting",
         "channel": "6",
         "mode": "digital",
         "x": 960,
-        "y": 760,
+        "y": 960,
         "wires": [
             [
                 "2f6bd800c9979c6c"
@@ -609,11 +660,11 @@
         "type": "system actuators",
         "z": "c0a854f2e62226f7",
         "name": "Rain Pump",
-        "actuator": "",
+        "actuator": "rain",
         "channel": "3",
         "mode": "digital",
         "x": 950,
-        "y": 920,
+        "y": 640,
         "wires": [
             [
                 "edff2574530c85bb"
@@ -662,7 +713,7 @@
         "name": "Light Sensor",
         "variable": "light",
         "x": 310,
-        "y": 660,
+        "y": 860,
         "wires": [
             [
                 "eac6b1e0a11d0689",
@@ -693,7 +744,7 @@
         "z": "c0a854f2e62226f7",
         "name": "Lighting Status",
         "x": 960,
-        "y": 840,
+        "y": 1040,
         "wires": [
             [
                 "3a5104b6f4842907"
@@ -707,7 +758,7 @@
         "z": "c0a854f2e62226f7",
         "name": "Precipitation Status",
         "x": 970,
-        "y": 980,
+        "y": 720,
         "wires": [
             [
                 "3a5104b6f4842907"
@@ -850,7 +901,7 @@
         "diff": false,
         "className": "",
         "x": 710,
-        "y": 600,
+        "y": 840,
         "wires": []
     },
     {
@@ -865,7 +916,7 @@
         "template": "{{payload.light}}",
         "output": "str",
         "x": 480,
-        "y": 620,
+        "y": 840,
         "wires": [
             [
                 "3fce40faa3303b97",
@@ -1000,7 +1051,7 @@
         "useDifferentColor": false,
         "className": "",
         "x": 740,
-        "y": 560,
+        "y": 800,
         "wires": [
             []
         ]
@@ -1034,7 +1085,7 @@
         "finalize": "",
         "libs": [],
         "x": 480,
-        "y": 580,
+        "y": 800,
         "wires": [
             [
                 "5333522188ce3566"
@@ -1049,7 +1100,7 @@
         "label": "Minimum (°C)",
         "tooltip": "The absolute minimum temperature",
         "group": "065b86780da2c47f",
-        "order": 0,
+        "order": 2,
         "width": "6",
         "height": "1",
         "wrap": false,
@@ -1079,7 +1130,7 @@
         "group": "065b86780da2c47f",
         "order": 1,
         "width": "6",
-        "height": "2",
+        "height": "1",
         "wrap": false,
         "passthru": true,
         "topic": "topic",
@@ -1105,7 +1156,7 @@
         "label": "Minimum (%)",
         "tooltip": "The absolute minimum humidity",
         "group": "30db70bef4ceda0b",
-        "order": 0,
+        "order": 2,
         "width": "6",
         "height": "1",
         "wrap": false,
@@ -1135,7 +1186,7 @@
         "group": "30db70bef4ceda0b",
         "order": 1,
         "width": "6",
-        "height": "2",
+        "height": "1",
         "wrap": false,
         "passthru": true,
         "topic": "topic",
@@ -1266,7 +1317,7 @@
         "step": 1,
         "className": "",
         "x": 320,
-        "y": 720,
+        "y": 920,
         "wires": [
             [
                 "16f818035533a75f"
@@ -1283,7 +1334,7 @@
         "group": "3a2a0cfe4ff01890",
         "order": 2,
         "width": "6",
-        "height": "2",
+        "height": "1",
         "wrap": false,
         "passthru": true,
         "topic": "topic",
@@ -1294,7 +1345,7 @@
         "step": 1,
         "className": "",
         "x": 320,
-        "y": 760,
+        "y": 960,
         "wires": [
             [
                 "16f818035533a75f"
@@ -1307,7 +1358,7 @@
         "z": "c0a854f2e62226f7",
         "name": "",
         "group": "065b86780da2c47f",
-        "order": 3,
+        "order": 4,
         "width": "6",
         "height": "1",
         "passthru": false,
@@ -1335,7 +1386,7 @@
         "z": "c0a854f2e62226f7",
         "name": "",
         "group": "30db70bef4ceda0b",
-        "order": 3,
+        "order": 4,
         "width": "6",
         "height": "1",
         "passthru": false,
@@ -1353,7 +1404,7 @@
         "y": 560,
         "wires": [
             [
-                "d44fa9863bcdba16"
+                "1a2e480989bed771"
             ]
         ]
     },
@@ -1363,7 +1414,35 @@
         "z": "c0a854f2e62226f7",
         "name": "",
         "group": "3a2a0cfe4ff01890",
-        "order": 3,
+        "order": 5,
+        "width": "3",
+        "height": "1",
+        "passthru": false,
+        "label": "Test Main",
+        "tooltip": "",
+        "color": "#292B2D",
+        "bgcolor": "#A2CA6F",
+        "className": "",
+        "icon": "",
+        "payload": "{\"test\":true}",
+        "payloadType": "json",
+        "topic": "topic",
+        "topicType": "msg",
+        "x": 320,
+        "y": 1000,
+        "wires": [
+            [
+                "aaefdcb537938d87"
+            ]
+        ]
+    },
+    {
+        "id": "25574e9cade00c22",
+        "type": "ui_button",
+        "z": "c0a854f2e62226f7",
+        "name": "",
+        "group": "cf4c231f9ae462c1",
+        "order": 2,
         "width": "6",
         "height": "1",
         "passthru": false,
@@ -1378,36 +1457,52 @@
         "topic": "topic",
         "topicType": "msg",
         "x": 330,
-        "y": 800,
+        "y": 120,
         "wires": [
             [
-                "eac6b1e0a11d0689"
+                "54fe9e766a5c5396"
             ]
         ]
     },
     {
-        "id": "d3ad415135309532",
-        "type": "inject",
+        "id": "1a2e480989bed771",
+        "type": "trigger",
         "z": "c0a854f2e62226f7",
-        "name": "On",
-        "props": [
-            {
-                "p": "topic",
-                "vt": "str"
-            },
-            {
-                "p": "payload"
-            }
-        ],
-        "repeat": "",
-        "crontab": "",
-        "once": false,
-        "onceDelay": 0.1,
-        "topic": "set",
-        "payload": "{\"lighting\":\"on\"}",
-        "payloadType": "json",
-        "x": 790,
-        "y": 660,
+        "name": "",
+        "op1": "{\"rain\":\"on\"}",
+        "op2": "{\"rain\":\"off\"}",
+        "op1type": "json",
+        "op2type": "json",
+        "duration": "5",
+        "extend": false,
+        "overrideDelay": false,
+        "units": "s",
+        "reset": "",
+        "bytopic": "all",
+        "topic": "topic",
+        "outputs": 1,
+        "x": 480,
+        "y": 560,
+        "wires": [
+            [
+                "38417f951ba2e8cf"
+            ]
+        ]
+    },
+    {
+        "id": "aaefdcb537938d87",
+        "type": "function",
+        "z": "c0a854f2e62226f7",
+        "name": "Toggle main lights",
+        "func": "// Toggle output each time a message arrives\nlet mainLights = context.get('mainLights') || false;  // get previous state, default false\n\nmainLights = !mainLights;              // flip the state\ncontext.set('mainLights', mainLights); // remember it\n\nreturn { payload:{lighting: mainLights?\"on\":\"off\"} };   // send true/false (on/off)",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 510,
+        "y": 1000,
         "wires": [
             [
                 "a030ee2f8804a863"
@@ -1415,31 +1510,70 @@
         ]
     },
     {
-        "id": "c41f0f2407d23d90",
-        "type": "inject",
+        "id": "54fe9e766a5c5396",
+        "type": "function",
         "z": "c0a854f2e62226f7",
-        "name": "Off",
-        "props": [
-            {
-                "p": "topic",
-                "vt": "str"
-            },
-            {
-                "p": "payload"
-            }
-        ],
-        "repeat": "",
-        "crontab": "",
-        "once": false,
-        "onceDelay": 0.1,
-        "topic": "set",
-        "payload": "{\"lighting\":\"off\"}",
-        "payloadType": "json",
-        "x": 790,
-        "y": 700,
+        "name": "Toggle fans",
+        "func": "// Toggle output each time a message arrives\nlet fans = context.get('fans') || false;  // get previous state, default false\n\nfans = !fans;              // flip the state\ncontext.set('fans', fans); // remember it\n\nreturn { payload:{cooler: fans?\"on\":\"off\"} };   // send true/false (on/off)",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 490,
+        "y": 120,
         "wires": [
             [
-                "a030ee2f8804a863"
+                "0c6df0b11131a8c9"
+            ]
+        ]
+    },
+    {
+        "id": "4c6b2e8277ea7a30",
+        "type": "function",
+        "z": "c0a854f2e62226f7",
+        "name": "Toggle aux lights",
+        "func": "// Toggle output each time a message arrives\nlet auxLights = context.get('auxLights') || false;  // get previous state, default false\n\nauxLights = !auxLights;              // flip the state\ncontext.set('auxLights', auxLights); // remember it\n\nreturn { payload:{auxLighting: auxLights?\"on\":\"off\"} };   // send true/false (on/off)",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 510,
+        "y": 1040,
+        "wires": [
+            [
+                "a5ee427c8f782dfc"
+            ]
+        ]
+    },
+    {
+        "id": "58985b59a734e3fd",
+        "type": "ui_button",
+        "z": "c0a854f2e62226f7",
+        "name": "",
+        "group": "3a2a0cfe4ff01890",
+        "order": 4,
+        "width": "3",
+        "height": "1",
+        "passthru": false,
+        "label": "Test Aux",
+        "tooltip": "",
+        "color": "#292B2D",
+        "bgcolor": "#A2CA6F",
+        "className": "",
+        "icon": "",
+        "payload": "{\"test\":true}",
+        "payloadType": "json",
+        "topic": "topic",
+        "topicType": "msg",
+        "x": 320,
+        "y": 1040,
+        "wires": [
+            [
+                "4c6b2e8277ea7a30"
             ]
         ]
     }

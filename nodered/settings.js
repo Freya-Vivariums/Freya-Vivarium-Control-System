@@ -68,7 +68,7 @@ module.exports = {
     httpStatic: '/opt/Freya/assets',
 
     // Network settings
-    uiPort: process.env.PORT || 1880,
+    uiPort: process.env.PORT || 80,
     // uiHost: "127.0.0.1", // commented to listen on all interfaces
 
     mqttReconnectTime: 15000,

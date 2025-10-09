@@ -2,7 +2,7 @@
     {
         "id": "c0a854f2e62226f7",
         "type": "tab",
-        "label": "Freya-v0.1.16",
+        "label": "Freya-v0.1.17",
         "disabled": false,
         "info": "",
         "env": []
@@ -252,6 +252,106 @@
         "order": 3,
         "width": "6",
         "height": "1"
+    },
+    {
+        "id": "7bc852f471236e47",
+        "type": "ui_group",
+        "name": "Camera",
+        "tab": "9fb2621070b93c5c",
+        "order": 10,
+        "disp": true,
+        "width": 6,
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "f89d7eddcc8eaeda",
+        "type": "ui-base",
+        "name": "My Dashboard",
+        "path": "/dashboard",
+        "appIcon": "",
+        "includeClientData": true,
+        "acceptsClientConfig": [
+            "ui-notification",
+            "ui-control"
+        ],
+        "showPathInSidebar": false,
+        "headerContent": "page",
+        "navigationStyle": "default",
+        "titleBarStyle": "default",
+        "showReconnectNotification": true,
+        "notificationDisplayTime": 1,
+        "showDisconnectNotification": true,
+        "allowInstall": false
+    },
+    {
+        "id": "816a31ac4184d09a",
+        "type": "ui-theme",
+        "name": "Default Theme",
+        "colors": {
+            "surface": "#ffffff",
+            "primary": "#0094CE",
+            "bgPage": "#eeeeee",
+            "groupBg": "#ffffff",
+            "groupOutline": "#cccccc"
+        },
+        "sizes": {
+            "density": "default",
+            "pagePadding": "12px",
+            "groupGap": "12px",
+            "groupBorderRadius": "4px",
+            "widgetGap": "12px"
+        }
+    },
+    {
+        "id": "4dd404b8d16154d5",
+        "type": "ui-page",
+        "name": "Pressure Settings",
+        "ui": "f89d7eddcc8eaeda",
+        "path": "/Dashboard",
+        "icon": "home",
+        "layout": "grid",
+        "theme": "816a31ac4184d09a",
+        "breakpoints": [
+            {
+                "name": "Default",
+                "px": "0",
+                "cols": "3"
+            },
+            {
+                "name": "Tablet",
+                "px": "576",
+                "cols": "6"
+            },
+            {
+                "name": "Small Desktop",
+                "px": "768",
+                "cols": "9"
+            },
+            {
+                "name": "Desktop",
+                "px": "1024",
+                "cols": "12"
+            }
+        ],
+        "order": 1,
+        "className": "",
+        "visible": "true",
+        "disabled": "false"
+    },
+    {
+        "id": "70e72a51ea68dfb2",
+        "type": "ui-group",
+        "name": "Group 1",
+        "page": "4dd404b8d16154d5",
+        "width": 6,
+        "height": 1,
+        "order": 1,
+        "showTitle": true,
+        "className": "",
+        "visible": "true",
+        "disabled": "false",
+        "groupType": "default"
     },
     {
         "id": "93869b02738cc142",
@@ -1297,62 +1397,6 @@
         ]
     },
     {
-        "id": "988ba27f60cd6e08",
-        "type": "ui_numeric",
-        "z": "c0a854f2e62226f7",
-        "name": "",
-        "label": "Lighting a",
-        "tooltip": "",
-        "group": "3a2a0cfe4ff01890",
-        "order": 1,
-        "width": "6",
-        "height": "1",
-        "wrap": false,
-        "passthru": true,
-        "topic": "topic",
-        "topicType": "msg",
-        "format": "{{value}}",
-        "min": 0,
-        "max": 10,
-        "step": 1,
-        "className": "",
-        "x": 320,
-        "y": 920,
-        "wires": [
-            [
-                "16f818035533a75f"
-            ]
-        ]
-    },
-    {
-        "id": "d8f88ba23e8f361f",
-        "type": "ui_numeric",
-        "z": "c0a854f2e62226f7",
-        "name": "",
-        "label": "Lighting b",
-        "tooltip": "",
-        "group": "3a2a0cfe4ff01890",
-        "order": 2,
-        "width": "6",
-        "height": "1",
-        "wrap": false,
-        "passthru": true,
-        "topic": "topic",
-        "topicType": "msg",
-        "format": "{{value}}",
-        "min": 0,
-        "max": 10,
-        "step": 1,
-        "className": "",
-        "x": 320,
-        "y": 960,
-        "wires": [
-            [
-                "16f818035533a75f"
-            ]
-        ]
-    },
-    {
         "id": "25f790088c680ed4",
         "type": "ui_button",
         "z": "c0a854f2e62226f7",
@@ -1575,6 +1619,110 @@
             [
                 "4c6b2e8277ea7a30"
             ]
+        ]
+    },
+    {
+        "id": "afe976aa06d351c5",
+        "type": "ui_template",
+        "z": "c0a854f2e62226f7",
+        "group": "7bc852f471236e47",
+        "name": "Camera",
+        "order": 0,
+        "width": 0,
+        "height": 0,
+        "format": "<div style=\"text-align:center\">\n    <img src=\"http://<host>:8081/?action=stream\" style=\"width:100%;max-width:720px\" />\n</div>",
+        "storeOutMessages": true,
+        "fwdInMessages": true,
+        "resendOnRefresh": true,
+        "templateScope": "local",
+        "className": "",
+        "x": 1040,
+        "y": 60,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "9a9c73adbdbd6ee2",
+        "type": "ui_template",
+        "z": "c0a854f2e62226f7",
+        "group": "3a2a0cfe4ff01890",
+        "name": "Sunrise Time",
+        "order": 1,
+        "width": "6",
+        "height": "1",
+        "format": "<!-- Lighting Settings -->\n<div style=\"display:flex;flex-direction:column;gap:6px;\">\n    <div style=\"display:flex;justify-content:space-between;align-items:center;\">\n        <label for=\"sunrise\">Sunrise</label>\n        <input id=\"sunrise\" type=\"time\" lang=\"en-GB\" step=\"60\"\n           style=\"border:none;background:transparent;text-align:right;\"\n           oninput=\"sendTime('sunrise', this.value)\">\n    </div>\n</div>\n\n<script>\n    (function(scope) {\n    scope.sendTime = function(label, value) {\n        scope.send({ topic: label, payload: value });\n        localStorage.setItem(`lighting_${label}`, value);\n    };\n\n    scope.$watch('msg', function(msg) {\n        if (!msg) return;\n        ['sunrise', 'sunset'].forEach(id => {\n            const el = document.getElementById(id);\n            if (!el) return;\n            const stored = localStorage.getItem(`lighting_${id}`);\n            if (msg.topic === id && /^([01]\\d|2[0-3]):([0-5]\\d)$/.test(msg.payload)) {\n                el.value = msg.payload;\n                localStorage.setItem(`lighting_${id}`, msg.payload);\n            } else if (!msg.topic && stored) {\n                el.value = stored;\n            }\n        });\n    });\n})(scope);\n</script>",
+        "storeOutMessages": true,
+        "fwdInMessages": true,
+        "resendOnRefresh": true,
+        "templateScope": "local",
+        "className": "",
+        "x": 310,
+        "y": 920,
+        "wires": [
+            [
+                "16f818035533a75f"
+            ]
+        ]
+    },
+    {
+        "id": "a82a9f730de14cd5",
+        "type": "ui_template",
+        "z": "c0a854f2e62226f7",
+        "group": "3a2a0cfe4ff01890",
+        "name": "Sunset Time",
+        "order": 1,
+        "width": "6",
+        "height": "1",
+        "format": "<!-- Lighting Settings -->\n<div style=\"display:flex;flex-direction:column;gap:6px;\">\n    <div style=\"display:flex;justify-content:space-between;align-items:center;\">\n        <label for=\"sunrise\">Sunset</label>\n        <input id=\"sunrise\" type=\"time\" lang=\"en-GB\" step=\"60\"\n           style=\"border:none;background:transparent;text-align:right;\"\n           oninput=\"sendTime('sunrise', this.value)\">\n    </div>\n</div>\n\n<script>\n    (function(scope) {\n    scope.sendTime = function(label, value) {\n        scope.send({ topic: label, payload: value });\n        localStorage.setItem(`lighting_${label}`, value);\n    };\n\n    scope.$watch('msg', function(msg) {\n        if (!msg) return;\n        ['sunrise', 'sunset'].forEach(id => {\n            const el = document.getElementById(id);\n            if (!el) return;\n            const stored = localStorage.getItem(`lighting_${id}`);\n            if (msg.topic === id && /^([01]\\d|2[0-3]):([0-5]\\d)$/.test(msg.payload)) {\n                el.value = msg.payload;\n                localStorage.setItem(`lighting_${id}`, msg.payload);\n            } else if (!msg.topic && stored) {\n                el.value = stored;\n            }\n        });\n    });\n})(scope);\n</script>",
+        "storeOutMessages": true,
+        "fwdInMessages": true,
+        "resendOnRefresh": true,
+        "templateScope": "local",
+        "className": "",
+        "x": 310,
+        "y": 960,
+        "wires": [
+            [
+                "16f818035533a75f"
+            ]
+        ]
+    },
+    {
+        "id": "1ee1b80395c36f00",
+        "type": "ui-button",
+        "z": "c0a854f2e62226f7",
+        "group": "70e72a51ea68dfb2",
+        "name": "Test",
+        "label": "button",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "emulateClick": false,
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "",
+        "className": "",
+        "icon": "",
+        "iconPosition": "left",
+        "payload": "",
+        "payloadType": "str",
+        "topic": "topic",
+        "topicType": "msg",
+        "buttonColor": "",
+        "textColor": "",
+        "iconColor": "",
+        "enableClick": true,
+        "enablePointerdown": false,
+        "pointerdownPayload": "",
+        "pointerdownPayloadType": "str",
+        "enablePointerup": false,
+        "pointerupPayload": "",
+        "pointerupPayloadType": "str",
+        "x": 110,
+        "y": 120,
+        "wires": [
+            []
         ]
     }
 ]

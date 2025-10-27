@@ -2,6 +2,7 @@ const path = require('path');
 
 module.exports = {
     userDir: '/opt/Freya/nodered',
+    httpAdminRoot: "/editor",
     flowFile: 'flows/Freya_flows.json',
     library: {
         user: path.join(__dirname, 'flows', 'lib')

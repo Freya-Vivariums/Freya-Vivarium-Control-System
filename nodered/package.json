@@ -10,10 +10,9 @@
         "url": "https://www.reddit.com/r/FreyaVivariums"
     },
     "dependencies": {
+        "@edgeberry/device-node-red-contrib": "^3.2.1",
         "@flowfuse/node-red-dashboard": "~1.29.0",
-        "node-red-contrib-edgeberry": "^0.1.18",
         "node-red-contrib-freya-nodes": "^0.0.20",
-        "node-red-dashboard": "^3.6.5",
         "node-red-theme-freya": "file:theme"
     }
 }

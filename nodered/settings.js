@@ -46,7 +46,7 @@ module.exports = {
         },
         palette: {},
         projects: {
-            enabled: true,
+            enabled: false,
             workflow: {
                 mode: "manual"
             }
@@ -64,14 +64,16 @@ module.exports = {
             enabled: false
         }
     },
-
+    // Context storage
+    contextStorage: {
+    	default: { module: "memory" },
+    	vivariumsettingsfile:    { module: "localfilesystem" }
+    },
     // Serve static files from /opt/Freya/assets
     httpStatic: '/opt/Freya/assets',
 
     // Network settings
     uiPort: process.env.PORT || 80,
-    // uiHost: "127.0.0.1", // commented to listen on all interfaces
-
     mqttReconnectTime: 15000,
     serialReconnectTime: 15000,
 

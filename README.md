@@ -1,22 +1,18 @@
 ![Freya Banner](https://raw.githubusercontent.com/Freya-Vivariums/.github/refs/heads/main/brand/Freya_banner.png)
 
-<img src="https://raw.githubusercontent.com/Freya-Vivariums/.github/main/documentation/Freya_vivarium.png" align="right" width="40%"/>
-
 The **Freya Vivarium Control System** project is mainly an installer for installing the other Freya components.
 
-<br clear="right"/>
-
 ## Installation
-When installing the Freya system, the **system actuators driver is automatically installed** with the rest of the system. For manual installation run these commands on your device:
-
+Download and execute the installation script:
 ```
 wget -O install.sh https://github.com/Freya-Vivariums/Freya-Vivarium-Control-System/releases/latest/download/install.sh;
 chmod +x ./install.sh;
 sudo ./install.sh;
 ```
-
+> [NOTE]
+> This installation script will automatically install the system sensors and actuators drivers, too. No manual installation is required.
 ## License & Collaboration
-**Copyright© 2025 Sanne 'SpuQ' Santens**. The Freya Vivarium Control System project is licensed under the **[MIT License](LICENSE.txt)**. The [Rules & Guidelines](https://github.com/Freya-Vivariums/.github/blob/main/brand/Freya_Trademark_Rules_and_Guidelines.md) apply to the usage of the Freya Vivariums™ brand.
+**Copyright© 2026 Sanne 'SpuQ' Santens**. The Freya Vivarium Control System project is licensed under the **[MIT License](LICENSE.txt)**. The [Rules & Guidelines](https://github.com/Freya-Vivariums/.github/blob/main/brand/Freya_Trademark_Rules_and_Guidelines.md) apply to the usage of the Freya Vivariums™ brand.
 
 ### Collaboration
 

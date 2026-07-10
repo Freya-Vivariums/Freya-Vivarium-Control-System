@@ -1,7 +1,0 @@
-nodered/node_modules
-nodered/.*
-nodered/lib
-hardware/
-nodered/.config.*
-nodered/*.backup 
-nodered/flows/*

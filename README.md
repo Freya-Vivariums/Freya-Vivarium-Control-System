@@ -2,7 +2,7 @@
 
 <img src="https://raw.githubusercontent.com/Freya-Vivariums/.github/main/documentation/Freya_vivarium.png" align="right" width="40%"/>
 
-The **Freya Vivarium Control System** lorem ipsum ...
+The **Freya Vivarium Control System** project is mainly an installer for installing the other Freya components.
 
 <br clear="right"/>
 

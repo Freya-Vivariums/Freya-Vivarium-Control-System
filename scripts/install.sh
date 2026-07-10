@@ -16,8 +16,8 @@ REPOOWNER=Freya-Vivariums
 APPDIR=/opt/${PROJECT}
 SYSDCONF=freya-nodered-service.conf
 # Repo names for the hardware drivers
-ACTUATORDRIVERREPO=Freya-actuators-driver
-SENSORDRIVERREPO=Freya-sensor-driver
+ACTUATORDRIVERREPO=Freya-SenseAndDrive-Hardware-Cartridge
+SENSORDRIVERREPO=Freya-Terra-Sensor
 
 # Check if this script is running as root. If not, notify the user
 # to run this script again as root and cancel the installtion process
@@ -55,6 +55,9 @@ echo ""
 #   Install system dependencies for this service
 #   and installation script to work correctly
 ##
+
+# Refresh the package index so subsequent apt installs use up-to-date sources
+apt update > /dev/null 2>&1
 
 # Check for NodeJS. If it's not installed, install it.
 echo -n -e "\e[0mChecking for NodeJS \e[0m"
@@ -101,8 +104,7 @@ else
     --confirm-root \
     --confirm-install \
     --skip-pi \
-    --restart \
-    #>/dev/null 2>&1;
+    --restart >/dev/null 2>&1;
     # Check if the last command succeeded
     if [ $? -eq 0 ]; then
         echo -e "\e[0;32m[Success]\e[0m"
@@ -138,17 +140,18 @@ fi
 ##
 
 # Check for the latest release of the application using the GitHub API
-echo -n -e "\e[0mGetting latest ${PROJECT} ${COMPONENT} release info \e[0m"
+echo -n -e "\e[0mGetting latest ${PROJECT} release info \e[0m"
 latest_release=$(curl -H "Accept: application/vnd.github.v3+json" -s "https://api.github.com/repos/${REPOOWNER}/${REPONAME}/releases/latest")
-# Check if this was successful
-if [ -n "$latest_release" ]; then
+# Check if this was successful (curl -s returns a JSON error body on failure,
+# so verify the payload actually contains a release tag).
+if [ -n "$latest_release" ] && echo "$latest_release" | jq -e '.tag_name' >/dev/null 2>&1; then
     echo -e "\e[0;32m[Success]\e[0m"
 else
-    echo -e "\e[0;33mFailed to get latest ${PROJECT} ${COMPONENT} release info! Exit.\e[0m";
+    echo -e "\e[0;33mFailed to get latest ${PROJECT} release info! Exit.\e[0m";
     exit 1;
 fi
 # Get the asset download URL from the release info
-echo -n -e "\e[0mGetting the latest ${PROJECT} ${COMPONENT} release download URL \e[0m"
+echo -n -e "\e[0mGetting the latest ${PROJECT} release download URL \e[0m"
 #asset_url=$(echo "$latest_release" | jq -r `.assets[] | select(.name | test("${REPONAME}-v[0-9]+\\.[0-9]+\\.[0-9]+\\.tar\\.gz")) | .url`)
 # assume $REPONAME is already set, and you've downloaded "$latest_release" via GitHub API
 asset_url=$(
@@ -233,24 +236,28 @@ fi
 ##
 
 # Actuators
-wget -O install.sh https://github.com/Freya-Vivariums/${ACTUATORDRIVERREPO}/releases/latest/download/install.sh;
-chmod +x ./install.sh;
-bash ./install.sh;
+actuator_installer=$(mktemp)
+wget -O "${actuator_installer}" https://github.com/Freya-Vivariums/${ACTUATORDRIVERREPO}/releases/latest/download/install.sh;
+chmod +x "${actuator_installer}";
+bash "${actuator_installer}";
 if [ $? -eq 0 ]; then
     echo -e "\e[0;32m[Success]\e[0m"
 else
     echo -e "\e[0;33mFailed!\e[0m";
 fi
+rm -f "${actuator_installer}"
 
 # Sensor
-wget -O install.sh https://github.com/Freya-Vivariums/${SENSORDRIVERREPO}/releases/latest/download/install.sh;
-chmod +x ./install.sh;
-bash ./install.sh;
+sensor_installer=$(mktemp)
+wget -O "${sensor_installer}" https://github.com/Freya-Vivariums/${SENSORDRIVERREPO}/releases/latest/download/install.sh;
+chmod +x "${sensor_installer}";
+bash "${sensor_installer}";
 if [ $? -eq 0 ]; then
     echo -e "\e[0;32m[Success]\e[0m"
 else
     echo -e "\e[0;33mFailed!\e[0m";
 fi
+rm -f "${sensor_installer}"
 
 ##
 #   Finish installation

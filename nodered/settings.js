@@ -73,7 +73,7 @@ module.exports = {
     httpStatic: '/opt/Freya/assets',
 
     // Network settings
-    uiPort: process.env.PORT || 80,
+    uiPort: process.env.PORT || 1880,
     mqttReconnectTime: 15000,
     serialReconnectTime: 15000,
 

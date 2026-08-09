@@ -88,6 +88,24 @@ else
 fi
 
 ##
+#   Edgeberry registration:
+#   Unregister the application so Edgeberry no longer proxies to it.
+##
+
+echo -n -e "\e[0mUnregistering ${PROJECT} from Edgeberry \e[0m"
+if command -v edgeberry >/dev/null 2>&1; then
+    unregister_output=$(edgeberry --unregister-application 2>&1)
+    if [ $? -eq 0 ]; then
+        echo -e "\e[0;32m[Success]\e[0m"
+    else
+        echo -e "\e[0;33m[Failed]\e[0m";
+        echo "${unregister_output}" >&2
+    fi
+else
+    echo -e "\e[0;33m[Not found]\e[0m"
+fi
+
+##
 #   Application:
 #   Remove the application directory installed by install.sh.
 ##

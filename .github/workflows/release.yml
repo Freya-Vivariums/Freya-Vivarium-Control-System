@@ -19,10 +19,17 @@ jobs:
           mkdir tempdir
           mv assets/ tempdir/
           mv config/ tempdir/
+          cp edgeberry.json tempdir/
           cp scripts/uninstall.sh tempdir/
           chmod +x tempdir/uninstall.sh
           mv nodered/ tempdir/
           mv LICENSE.txt tempdir/
+
+      - name: Keep edgeberry.json version in sync with release tag
+        run: |
+          tag="${{ github.event.release.tag_name }}"
+          jq --arg version "${tag}" '.version = $version' tempdir/edgeberry.json > tempdir/edgeberry.json.tmp
+          mv tempdir/edgeberry.json.tmp tempdir/edgeberry.json
 
       - name: Create tarball
         run: tar -C tempdir -zcvf package.tar.gz .

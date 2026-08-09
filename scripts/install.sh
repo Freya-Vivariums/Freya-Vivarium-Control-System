@@ -231,6 +231,19 @@ else
     exit 1;
 fi
 
+# Register the application with Edgeberry
+# Edgeberry owns nginx and proxies /application/* to the app port,
+# so this must succeed for the UI to be reachable.
+echo -n -e "\e[0mRegistering ${PROJECT} with Edgeberry \e[0m"
+register_output=$(edgeberry --register-application ${APPDIR} 2>&1)
+if [ $? -eq 0 ]; then
+    echo -e "\e[0;32m[Success]\e[0m"
+else
+    echo -e "\e[0;33mFailed! Exit.\e[0m";
+    echo "${register_output}" >&2
+    exit 1;
+fi
+
 ##
 #   Install the Hardware drivers
 ##

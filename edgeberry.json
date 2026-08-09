@@ -1,0 +1,12 @@
+{
+  "name": "Freya",
+  "version": "v0.3.6",
+  "description": "Freya wired up in Node-RED",
+  "ui": { "port": 1880 },
+  "branding": {
+    "logo": "assets/Freya_logo_light.png",
+    "mark": "assets/favicon.ico",
+    "colors": { "fg": "#E1E2E4", "bg": "#292B2D", "primary": "#A2CA6F" }
+  },
+  "service": { "unit": "nodered.service", "supports": ["restart", "stop", "start"] }
+}

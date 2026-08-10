@@ -41,7 +41,8 @@ module.exports = {
             favicon: "/favicon.ico"
         },
         header: {
-            title: " ",
+            title: "Editor",
+            image: null,    // no logo image, just the title text
             url: "/",
         },
         palette: {},

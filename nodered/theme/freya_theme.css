@@ -8,27 +8,60 @@
   --freya_light_grey: #e1e2e4;
   --freya_black: #292d2b;
 
-  --nr-theme-primary: var(--freya_dark_green); /* Freya green */
+  /* Darker greens for hover/active states */
+  --freya_green_hover: #5E9A26;
+  --freya_green_active: #4C7D1F;
 }
 
-/* Minimalist Freya Theme: overrides editor header logo & header bar */
+/*
+ * Header bar: same background as the editor workspace
+ * (--red-ui-secondary-background), with no divider below it.
+ */
+:root {
+  --red-ui-header-background: #fff;
+
+  /* Header text, icons and dropdown menus, inverted for the light bar */
+  --red-ui-header-menu-color: var(--freya_black);
+  --red-ui-header-menu-heading-color: var(--freya_black);
+  --red-ui-header-menu-color-disabled: var(--freya_dark_grey);
+  --red-ui-header-menu-sublabel-color: var(--freya_dark_grey);
+  --red-ui-header-menu-background: #fff;
+  --red-ui-header-menu-item-hover: var(--freya_light_grey);
+  --red-ui-header-menu-item-border-active: var(--freya_dark_green);
+  --red-ui-header-button-background-active: var(--freya_light_grey);
+
+  /* Deploy button: Freya green instead of Node-RED red */
+  --red-ui-deploy-button-background: var(--freya_dark_green);
+  --red-ui-deploy-button-background-hover: var(--freya_green_hover);
+  --red-ui-deploy-button-background-active: var(--freya_green_active);
+  --red-ui-deploy-button-background-disabled: var(--freya_light_grey);
+  --red-ui-deploy-button-background-disabled-hover: #d3d5d8;
+  --red-ui-deploy-button-color-disabled: var(--freya_dark_grey);
+
+  /* Primary buttons in the workspace and sidebar */
+  --red-ui-workspace-button-background-primary: var(--freya_dark_green);
+  --red-ui-workspace-button-background-primary-hover: var(--freya_green_hover);
+
+  --red-ui-text-color-link: var(--freya_dark_blue);
+}
+
 #red-ui-header {
-  background-color: var(--freya_black);
-  border-bottom: 2px solid var(--freya_dark_green);
-}
-#red-ui-header .red-ui-header-logo {
-  background: url('/Freya_logo_light.png') no-repeat left center;
-  background-size: contain;
-  width: 150px;
-  height: 31px;
-}
-
-/* Hide the NodeRED logo */
-#red-ui-header .red-ui-header-logo a {
-    display: none;
+  border-bottom: none;
 }
 
 #red-ui-header .red-ui-deploy-button {
-    background: var(--freya_dark_green);
-    font-weight: bold;
+  font-weight: bold;
+}
+
+/* Node-RED borders the header dropdowns in their own background colour, which
+   leaves them edgeless now that both are white. Give them a real border. */
+#red-ui-header ul.red-ui-menu-dropdown {
+  border-color: var(--red-ui-primary-border-color);
+  box-shadow: 0 2px 8px var(--red-ui-shadow);
+}
+
+/* The disabled deploy button's caret inherits a light colour meant for the
+   dark header; darken it so it stays visible on the light grey pill. */
+#red-ui-header #red-ui-header-button-deploy.disabled + #red-ui-header-button-deploy-options {
+  color: var(--freya_dark_grey);
 }

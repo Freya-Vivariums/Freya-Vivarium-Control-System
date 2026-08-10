@@ -1,6 +1,6 @@
 {
   "name": "Freya",
-  "version": "v0.3.6",
+  "version": "v0.4.0",
   "description": "Freya wired up in Node-RED",
   "ui": { "port": 1880 },
   "branding": {

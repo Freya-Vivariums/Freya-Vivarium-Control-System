@@ -7,6 +7,49 @@
 #
 #   Copyright© 2025 Sanne “SpuQ” Santens
 #   Released under the MIT License (see LICENSE.txt)
+#
+#  ----------------------------------------------------------------------------
+#   Before changing this script
+#  ----------------------------------------------------------------------------
+#
+#   The order is load-bearing. Node-RED reads its palette and its flow file once,
+#   at startup, so it is started at the very end - after the node packages are
+#   installed, after the hardware drivers are on the D-Bus, and after the default
+#   flow is in place. Start it any earlier and the install still reports success
+#   while Node-RED runs with an empty palette.
+#
+#   Node.js belongs to the whole device, not to this project. Edgeberry runs on
+#   the same /usr/bin/node. Node.js is therefore installed when it is missing and
+#   otherwise left exactly as found: a version that does not suit Node-RED is
+#   reported and the install stops. Upgrading it here would change the runtime
+#   underneath another application.
+#
+#   Versions are pinned, never discovered - see NODEREDVERSION below.
+#
+#   Steps report outcomes, not activity:
+#
+#     report_success                      prints [Success]
+#     report_failure <output> [severity]  prints the reason indented on stderr;
+#                                         'fatal' (default) exits 1, 'warning'
+#                                         returns so the caller can continue
+#     run_step <desc> <severity> <cmd..>  both of the above around one command
+#
+#   Never send a command's output to /dev/null. A bare "Failed!" cannot be
+#   debugged on a device you are not sitting in front of.
+#
+#   'problems' counts failures that did not abort the install. The script exits
+#   non-zero when it is not zero, so a partial install is never reported as a
+#   success to whoever called it.
+#
+#   The hardware drivers are installed by separate scripts, downloaded from their
+#   own releases. Their contract, which install_hardware_driver() relies on:
+#
+#     install.sh [--embedded]   --embedded tells them not to clear the screen or
+#                               print their own closing banner; this script owns
+#                               the screen and the verdict
+#     exit 0                    installed
+#     exit 1                    one or more steps failed
+#     exit 2                    installed, but the device must reboot first
 ##
 
 PROJECT=Freya
@@ -20,6 +63,19 @@ ACTUATORDRIVERREPO=Freya-SenseAndDrive-Hardware-Cartridge
 SENSORDRIVERREPO=Freya-Terra-Sensor
 # Repo holding the default Node-RED flow
 FLOWREPO=Freya-NodeRED-flow
+
+##
+#   Pinned versions
+#   Pin deliberately, and bump deliberately. An unpinned install takes whatever
+#   the registry serves that day, which is how this device ended up with a
+#   Node-RED it could not start.
+#
+#   Node-RED 5.x requires Node.js >= 22.9. This device runs Debian's Node.js 20,
+#   which is also what Edgeberry runs on, so the Node-RED 4.x line is the
+#   supported combination here. Before raising this, check that the whole
+#   palette - and Edgeberry - support the Node.js version the new line needs.
+##
+NODEREDVERSION=4.1.13
 
 # Check if this script is running as root. If not, notify the user
 # to run this script again as root and cancel the installtion process
@@ -129,9 +185,15 @@ run_step "Refreshing the package index (this can take a minute)" warning \
     apt update
 
 # Check for NodeJS. If it's not installed, install it.
+#
+# Node.js is a shared system component: Edgeberry runs on the same /usr/bin/node
+# this project uses. So it is installed when missing and otherwise left exactly
+# as it is - this installer never upgrades or replaces Node.js underneath
+# another application. Where a version is not good enough, it says so and stops
+# rather than "fixing" it.
 echo -n -e "\e[0mChecking for NodeJS \e[0m"
 if which node >/dev/null 2>&1; then
-    echo -e "\e[0;32m[Installed] \e[0m";
+    echo -e "\e[0;32m[Installed] \e[0m$(node -v)";
 else
     echo -e "\e[0;33m[Not installed] \e[0m";
     run_step "Installing Node using apt" fatal apt install -y nodejs
@@ -146,34 +208,92 @@ else
     run_step "Installing NPM using apt" fatal apt install -y npm
 fi
 
-# Check for Node-RED. If it's not installed, install it.
-echo -n -e "\e[0mChecking for Node-RED \e[0m"
-if which node-red >/dev/null 2>&1; then
-    echo -e "\e[0;32m[Installed] \e[0m";
-else
-    echo -e "\e[0;33m[Not installed] \e[0m";
-    echo -n -e "\e[0mInstalling Node-RED \e[0m";
+# The version of Node-RED currently installed globally, read from its
+# package.json. Never ask node-red itself: when it cannot run on the installed
+# Node.js it prints an error and still exits 0, so 'node-red --version' reports
+# neither a version nor a failure.
+installed_nodered_version(){
+    local root pkg
+    root=$(npm root -g 2>/dev/null) || return 1
+    pkg="${root}/node-red/package.json"
+    [ -f "${pkg}" ] || return 1
+    jq -r '.version // empty' "${pkg}" 2>/dev/null
+}
+
+# Install Node-RED from scratch using the official installer, which also creates
+# the systemd service. No --node* flag is passed on purpose: those make the
+# script add the NodeSource apt repository and reinstall Node.js, which would
+# replace the Node.js that Edgeberry runs on. Without one it leaves Node.js
+# alone, which is what this project wants.
+install_nodered_from_scratch(){
+    local installer output
+    echo -n -e "\e[0mInstalling Node-RED ${NODEREDVERSION} \e[0m"
     # Download the installer to a file first. Piping a failed download straight
     # into bash succeeds on an empty script, which would report Node-RED as
     # installed when nothing happened at all.
-    nodered_installer=$(mktemp)
-    nodered_output=$( {
+    installer=$(mktemp)
+    output=$( {
         set -e
-        curl -fsL -o "${nodered_installer}" \
+        curl -fsL -o "${installer}" \
             https://raw.githubusercontent.com/node-red/linux-installers/master/deb/update-nodejs-and-nodered
-        bash "${nodered_installer}" \
+        bash "${installer}" \
             --confirm-root \
             --confirm-install \
             --skip-pi \
+            --nodered-version="${NODEREDVERSION}" \
             --restart
     } 2>&1 )
-    if [ $? -eq 0 ]; then
+    local result=$?
+    rm -f "${installer}"
+    if [ ${result} -eq 0 ]; then
         report_success
     else
-        rm -f "${nodered_installer}"
-        report_failure "${nodered_output}"
+        report_failure "${output}"
     fi
-    rm -f "${nodered_installer}"
+}
+
+# Check for Node-RED. Presence is not enough: it has to be the pinned version,
+# because that is the version this project has been tested against and the one
+# that runs on the Node.js already on this device.
+echo -n -e "\e[0mChecking for Node-RED \e[0m"
+current_nodered=$(installed_nodered_version)
+if [ "${current_nodered}" = "${NODEREDVERSION}" ]; then
+    echo -e "\e[0;32m[Installed] \e[0mv${current_nodered}";
+elif [ -z "${current_nodered}" ]; then
+    echo -e "\e[0;33m[Not installed] \e[0m";
+    install_nodered_from_scratch
+else
+    # Present but not the pinned version. The systemd service already exists, so
+    # replace just the package - re-running the official installer here would
+    # touch far more of the system than needs touching.
+    echo -e "\e[0;33m[Found v${current_nodered}, want v${NODEREDVERSION}] \e[0m";
+    run_step "Installing Node-RED ${NODEREDVERSION}" fatal \
+        npm install -g node-red@${NODEREDVERSION}
+fi
+
+# Node-RED states the Node.js version it needs. Check the one on this device
+# satisfies it, rather than finding out from a service that crash-loops.
+# Majors are compared, which is enough to catch the mismatch that matters
+# without hand-rolling a semver parser.
+# Note what this deliberately does not do: upgrade Node.js. It is shared with
+# Edgeberry, so resolving a mismatch is a decision for a human, not a side
+# effect of installing a vivarium.
+echo -n -e "\e[0mChecking Node.js suits Node-RED \e[0m"
+nodered_needs=$(jq -r '.engines.node // empty' "$(npm root -g)/node-red/package.json" 2>/dev/null)
+node_major=$(node -v 2>/dev/null | sed 's/^v//' | cut -d. -f1)
+needs_major=$(echo "${nodered_needs}" | grep -o '[0-9]\+' | head -1)
+if [ -z "${needs_major}" ] || [ -z "${node_major}" ]; then
+    # Nothing to compare against: report it rather than claiming a pass.
+    echo -e "\e[0;33m[Unknown]\e[0m"
+    echo -e "\e[0m    Could not determine the requirement (node-red wants '${nodered_needs:-?}', node reports '$(node -v 2>/dev/null)')\e[0m"
+elif [ "${node_major}" -ge "${needs_major}" ]; then
+    echo -e "\e[0;32m[Success]\e[0m"
+else
+    report_failure "Node-RED ${NODEREDVERSION} needs Node.js ${nodered_needs}, but this device has $(node -v).
+Node.js is shared with Edgeberry on this device, so this installer will not
+upgrade it. Either pin Node-RED to a release that supports Node.js ${node_major}
+(NODEREDVERSION in this script), or upgrade Node.js deliberately after checking
+that Edgeberry still works on the newer version."
 fi
 
 # Check for JQ (required by this script). If it's not installed,
@@ -434,12 +554,44 @@ fi
 ##
 echo ""
 echo -n -e "\e[0mStarting Node-RED \e[0m"
+# Record where to start reading the journal, before anything is restarted.
+nodered_since=$(date '+%Y-%m-%d %H:%M:%S')
 nodered_output=$(systemctl restart nodered.service 2>&1)
 if [ $? -eq 0 ]; then
     report_success
 else
     report_failure "${nodered_output}
 Run 'journalctl -u nodered -n 50' for the service log." warning
+    problems=$((problems+1))
+fi
+
+# 'systemctl restart' returns 0 as soon as systemd has spawned the process. It
+# says nothing about whether Node-RED survived: a crash-looping service reports
+# itself as "active (running)" for as long as each attempt lasts. So wait for
+# Node-RED to say, itself, that it got as far as running the flow.
+#
+# This is the check that catches what the individual steps cannot - a palette
+# that will not load, a flow referring to a node that is not installed, a
+# Node.js it cannot run on. It does not need to know which of those went wrong.
+echo -n -e "\e[0mWaiting for Node-RED to start the flows \e[0m"
+# Generous: loading a large palette on a cold Raspberry Pi is slow, and calling
+# a working install broken is worse than waiting a little longer.
+NODEREDSTARTTIMEOUT=90
+nodered_started=false
+for _ in $(seq 1 $((NODEREDSTARTTIMEOUT / 2))); do
+    if journalctl -u nodered.service --since "${nodered_since}" 2>/dev/null | grep -q "Started flows"; then
+        nodered_started=true
+        break
+    fi
+    sleep 2
+done
+
+if [ "${nodered_started}" = true ]; then
+    report_success
+else
+    report_failure "Node-RED did not report 'Started flows' within ${NODEREDSTARTTIMEOUT} seconds.
+The last of its log:
+$(journalctl -u nodered.service --since "${nodered_since}" --no-pager 2>/dev/null | tail -15)" warning
     problems=$((problems+1))
 fi
 

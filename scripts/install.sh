@@ -42,6 +42,9 @@ fi
 # success.
 problems=0
 
+# Set when a component needs this device rebooted before it can work.
+REBOOT_REQUIRED=false
+
 # Report a step that succeeded
 report_success(){
     echo -e "\e[0;32m[Success]\e[0m"
@@ -352,6 +355,15 @@ install_hardware_driver(){
         return 0
     fi
 
+    # A driver installer exits 2 when it installed correctly but the device has
+    # to be rebooted before the hardware is usable - enabling the I2C bus, for
+    # instance. That is not a failure, but it must not be swallowed either.
+    if [ ${result} -eq 2 ]; then
+        echo -e "\e[0;32mThe ${description} was installed.\e[0m"
+        REBOOT_REQUIRED=true
+        return 0
+    fi
+
     echo -e "\e[0;33mThe ${description} installer failed (see its output above).\e[0m" >&2
     problems=$((problems+1))
     return 1
@@ -435,6 +447,12 @@ fi
 #   Finish installation
 ##
 echo ""
+if [ "${REBOOT_REQUIRED}" = true ]; then
+    echo -e "\e[0;33mThis device must be rebooted before all of the hardware works.\e[0m"
+    echo -e "\e[0;33mReboot it with:  sudo reboot\e[0m"
+    echo ""
+fi
+
 if [ ${problems} -eq 0 ]; then
     echo -e "The \033[1m${PROJECT}\033[0m was successfully installed!"
     echo ""

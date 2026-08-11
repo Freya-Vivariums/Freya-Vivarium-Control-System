@@ -18,6 +18,8 @@ SYSDCONF=freya-nodered-service.conf
 # Repo names for the hardware drivers
 ACTUATORDRIVERREPO=Freya-SenseAndDrive-Hardware-Cartridge
 SENSORDRIVERREPO=Freya-Terra-Sensor
+# Repo holding the default Node-RED flow
+FLOWREPO=Freya-NodeRED-flow
 
 # Check if this script is running as root. If not, notify the user
 # to run this script again as root and cancel the installtion process
@@ -359,11 +361,64 @@ install_hardware_driver "${ACTUATORDRIVERREPO}" "actuator driver"
 install_hardware_driver "${SENSORDRIVERREPO}" "sensor driver"
 
 ##
+#   Default flow
+#   Install the default Freya flow, but only when this device does not have one
+#   yet. On an update the flow on the device belongs to the user and is very
+#   likely edited, so it must never be overwritten. The flow is optional: if the
+#   flow repository has no release asset, the installation carries on and the
+#   user imports the flow through the editor.
+##
+FLOWFILE=${APPDIR}/nodered/flows/Freya_flows.json
+FLOWURL=https://github.com/Freya-Vivariums/${FLOWREPO}/releases/latest/download/Freya_flows.json
+
+echo -n -e "\e[0mInstalling the default flow \e[0m"
+if [ -s "${FLOWFILE}" ]; then
+    # Not a failure: this is an update, and the flow on the device is the user's.
+    echo -e "\e[0;32m[Kept the existing flow]\e[0m"
+else
+    flow_download=$(mktemp)
+    if ! curl -fsL -o "${flow_download}" "${FLOWURL}"; then
+        # No published flow to install. The system works without one, so this
+        # is not a problem - but the user has to know the vivarium will not
+        # control anything until a flow is imported.
+        echo -e "\e[0;33m[Not available]\e[0m"
+        echo -e "\e[0m    No flow release asset at ${FLOWURL}\e[0m"
+        echo -e "\e[0m    Import the flow through the Node-RED editor instead, see\e[0m"
+        echo -e "\e[0m    https://github.com/Freya-Vivariums/${FLOWREPO}\e[0m"
+    # The -s test is not redundant: jq reads an empty file as "no input" and
+    # exits 0, so an empty download would otherwise pass as a valid flow.
+    elif [ ! -s "${flow_download}" ] || ! jq -e 'type == "array" and length > 0' "${flow_download}" >/dev/null 2>&1; then
+        # A corrupt flow file stops Node-RED from starting at all. Refuse to
+        # install one, rather than break the editor the user needs to fix it.
+        report_failure "The downloaded flow is not a valid Node-RED flow file.
+Downloaded from ${FLOWURL}" warning
+        problems=$((problems+1))
+    else
+        flow_output=$( {
+            set -e
+            mkdir -p "$(dirname "${FLOWFILE}")"
+            mv -f "${flow_download}" "${FLOWFILE}"
+            chmod 644 "${FLOWFILE}"
+            # Match the userDir's ownership so Node-RED can still rewrite the
+            # flow on deploy if the service is ever run as a non-root user.
+            chown -R "$(stat -c '%U:%G' ${APPDIR}/nodered)" "$(dirname "${FLOWFILE}")"
+        } 2>&1 )
+        if [ $? -eq 0 ]; then
+            report_success
+        else
+            report_failure "${flow_output}" warning
+            problems=$((problems+1))
+        fi
+    fi
+    rm -f "${flow_download}"
+fi
+
+##
 #   Start Node-RED
-#   Last, so that it starts with the freshly installed nodes in its palette and
-#   with the hardware drivers already on the bus. Node-RED reads its palette
-#   once at startup, so starting it any earlier leaves it running without the
-#   Freya nodes until something restarts it.
+#   Last, so that it starts with the freshly installed nodes in its palette,
+#   the default flow in place and the hardware drivers already on the bus.
+#   Node-RED reads its palette and flow once at startup, so starting it any
+#   earlier leaves it running without them until something restarts it.
 ##
 echo ""
 echo -n -e "\e[0mStarting Node-RED \e[0m"

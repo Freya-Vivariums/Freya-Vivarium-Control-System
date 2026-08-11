@@ -1,0 +1,20 @@
+{
+  "name": "freya-vivarium-control-system",
+  "description": "Node-RED project for the Freya Vivarium Control System",
+  "version": "0.4.0",
+  "author": "Sanne 'SpuQ' Santens",
+  "license": "MIT",
+  "private": false,
+  "homepage": "https://github.com/Freya-Vivariums",
+  "bugs": {
+    "url": "https://www.reddit.com/r/FreyaVivariums"
+  },
+  "dependencies": {
+    "@edgeberry/device-node-red-contrib": "^3.8.0",
+    "@flowfuse/node-red-dashboard": "~1.30.2",
+    "@freya-vivariums/freya-hardware-cartridge-node-red-contrib": "^0.4.0",
+    "@freya-vivariums/freya-logic-nodes-node-red-contrib": "^0.4.0",
+    "@freya-vivariums/freya-terra-sensor-node-red-contrib": "^0.4.0",
+    "node-red-theme-freya": "file:theme"
+  }
+}

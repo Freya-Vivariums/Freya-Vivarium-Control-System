@@ -27,6 +27,66 @@ if [ "$EUID" -ne 0 ]; then
     exit 1;
 fi
 
+##
+#   Step reporting
+#   Every step prints its outcome. A step that fails also prints the output
+#   of the command that failed: "Failed!" on its own leaves the user with
+#   nothing to debug, which is exactly the situation these helpers exist to
+#   avoid. Commands are therefore captured, never discarded.
+##
+
+# Steps that report a failure without aborting are counted, so the closing
+# message can tell the truth about what happened instead of always claiming
+# success.
+problems=0
+
+# Report a step that succeeded
+report_success(){
+    echo -e "\e[0;32m[Success]\e[0m"
+}
+
+# Report a step that failed. Takes the captured output of the failing command,
+# and optionally the severity: 'fatal' (default) ends the installation,
+# 'warning' reports and continues.
+report_failure(){
+    local output="$1"
+    local severity="${2:-fatal}"
+
+    if [ "${severity}" = "fatal" ]; then
+        echo -e "\e[0;31mFailed! Exit.\e[0m"
+    else
+        echo -e "\e[0;33m[Failed]\e[0m"
+    fi
+
+    # Print the reason indented underneath the step it belongs to
+    if [ -n "${output}" ]; then
+        echo "${output}" | sed 's/^/    /' >&2
+    fi
+
+    if [ "${severity}" = "fatal" ]; then
+        exit 1;
+    fi
+    return 0
+}
+
+# Run a single command as an installation step: print the description, run the
+# command with its output captured, and report the outcome. Usage:
+#   run_step "Installing jq" fatal apt install -y jq
+run_step(){
+    local description="$1"
+    local severity="$2"
+    shift 2
+    local output
+
+    echo -n -e "\e[0m${description} \e[0m"
+    if output=$("$@" 2>&1); then
+        report_success
+        return 0
+    fi
+    report_failure "${output}" "${severity}"
+    return 1
+}
+
 # Continue with a clean screen
 clear;
 
@@ -56,80 +116,69 @@ echo ""
 #   and installation script to work correctly
 ##
 
-# Refresh the package index so subsequent apt installs use up-to-date sources
-apt update > /dev/null 2>&1
+# Refresh the package index so subsequent apt installs use up-to-date sources.
+# This takes a while, so announce it before starting instead of leaving the
+# user staring at a silent screen. A stale package index is not fatal: the
+# dependencies below may well already be installed, so warn and continue.
+run_step "Refreshing the package index (this can take a minute)" warning \
+    apt update
 
 # Check for NodeJS. If it's not installed, install it.
 echo -n -e "\e[0mChecking for NodeJS \e[0m"
-if which node >/dev/null 2>&1; then 
+if which node >/dev/null 2>&1; then
     echo -e "\e[0;32m[Installed] \e[0m";
-else 
+else
     echo -e "\e[0;33m[Not installed] \e[0m";
-    echo -n -e "\e[0mInstalling Node using apt \e[0m";
-    apt install -y nodejs > /dev/null 2>&1;
-    # Check if the last command succeeded
-    if [ $? -eq 0 ]; then
-        echo -e "\e[0;32m[Success]\e[0m"
-    else
-        echo -e "\e[0;33mFailed! Exit.\e[0m";
-        exit 1;
-    fi
+    run_step "Installing Node using apt" fatal apt install -y nodejs
 fi
 
 # Check for NPM. If it's not installed, install it.
 echo -n -e "\e[0mChecking for Node Package Manager (NPM) \e[0m"
-if which npm >/dev/null 2>&1; then 
-    echo -e "\e[0;32m[Installed] \e[0m"; 
-else 
+if which npm >/dev/null 2>&1; then
+    echo -e "\e[0;32m[Installed] \e[0m";
+else
     echo -e "\e[0;33m[Not installed] \e[0m";
-    echo -n -e "\e[0mInstalling NPM using apt \e[0m";
-    apt install -y npm > /dev/null 2>&1;
-    # Check if the last command succeeded
-    if [ $? -eq 0 ]; then
-        echo -e "\e[0;32m[Success]\e[0m"
-    else
-        echo -e "\e[0;33mFailed! Exit.\e[0m";
-        exit 1;
-    fi
+    run_step "Installing NPM using apt" fatal apt install -y npm
 fi
 
 # Check for Node-RED. If it's not installed, install it.
 echo -n -e "\e[0mChecking for Node-RED \e[0m"
-if which node-red >/dev/null 2>&1; then 
-    echo -e "\e[0;32m[Installed] \e[0m"; 
-else 
+if which node-red >/dev/null 2>&1; then
+    echo -e "\e[0;32m[Installed] \e[0m";
+else
     echo -e "\e[0;33m[Not installed] \e[0m";
     echo -n -e "\e[0mInstalling Node-RED \e[0m";
-    bash <(curl -sL https://raw.githubusercontent.com/node-red/linux-installers/master/deb/update-nodejs-and-nodered)  \
-    --confirm-root \
-    --confirm-install \
-    --skip-pi \
-    --restart >/dev/null 2>&1;
-    # Check if the last command succeeded
+    # Download the installer to a file first. Piping a failed download straight
+    # into bash succeeds on an empty script, which would report Node-RED as
+    # installed when nothing happened at all.
+    nodered_installer=$(mktemp)
+    nodered_output=$( {
+        set -e
+        curl -fsL -o "${nodered_installer}" \
+            https://raw.githubusercontent.com/node-red/linux-installers/master/deb/update-nodejs-and-nodered
+        bash "${nodered_installer}" \
+            --confirm-root \
+            --confirm-install \
+            --skip-pi \
+            --restart
+    } 2>&1 )
     if [ $? -eq 0 ]; then
-        echo -e "\e[0;32m[Success]\e[0m"
+        report_success
     else
-        echo -e "\e[0;33mFailed! Exit.\e[0m";
-        exit 1;
+        rm -f "${nodered_installer}"
+        report_failure "${nodered_output}"
     fi
+    rm -f "${nodered_installer}"
 fi
 
 # Check for JQ (required by this script). If it's not installed,
 # install it.
 echo -n -e "\e[0mChecking for jq \e[0m"
-if which jq >/dev/null 2>&1; then  
-    echo -e "\e[0;32m[Installed] \e[0m"; 
-else 
+if which jq >/dev/null 2>&1; then
+    echo -e "\e[0;32m[Installed] \e[0m";
+else
     echo -e "\e[0;33m[Not installed] \e[0m";
-    echo -n -e "\e[0mInstalling jq using apt \e[0m";
-    apt install -y jq > /dev/null 2>&1
-    # Check if the last command succeeded
-    if [ $? -eq 0 ]; then
-        echo -e "\e[0;32m[Success]\e[0m"
-    else
-        echo -e "\e[0;33mFailed! Exit.\e[0m";
-        exit 1;
-    fi
+    run_step "Installing jq using apt" fatal apt install -y jq
 fi
 
 ##
@@ -145,15 +194,17 @@ latest_release=$(curl -H "Accept: application/vnd.github.v3+json" -s "https://ap
 # Check if this was successful (curl -s returns a JSON error body on failure,
 # so verify the payload actually contains a release tag).
 if [ -n "$latest_release" ] && echo "$latest_release" | jq -e '.tag_name' >/dev/null 2>&1; then
-    echo -e "\e[0;32m[Success]\e[0m"
+    report_success
 else
-    echo -e "\e[0;33mFailed to get latest ${PROJECT} release info! Exit.\e[0m";
-    exit 1;
+    # The response body carries the actual reason (API rate limit exceeded,
+    # repository not found, no internet connection, ...), so show it.
+    report_failure "GitHub API: https://api.github.com/repos/${REPOOWNER}/${REPONAME}/releases/latest
+Response was:
+${latest_release:-(empty - no response from GitHub)}"
 fi
+
 # Get the asset download URL from the release info
 echo -n -e "\e[0mGetting the latest ${PROJECT} release download URL \e[0m"
-#asset_url=$(echo "$latest_release" | jq -r `.assets[] | select(.name | test("${REPONAME}-v[0-9]+\\.[0-9]+\\.[0-9]+\\.tar\\.gz")) | .url`)
-# assume $REPONAME is already set, and you've downloaded "$latest_release" via GitHub API
 asset_url=$(
   echo "$latest_release" \
     | jq -r \
@@ -164,36 +215,47 @@ asset_url=$(
 )
 # If we have an asset URL, download the tarball
 if [ -n "$asset_url" ]; then
-    #echo -e "\e[0;32mURL:\e[0m ${asset_url}";
-    echo -e "\e[0;32m[Success]\e[0m"; 
-    echo -n -e "\e[0mDownloading the application \e[0m"
-    curl -L \
+    report_success
+else
+    # Name what was looked for and what the release actually contains: a
+    # release published without its tarball is otherwise indistinguishable
+    # from a broken script.
+    release_tag=$(echo "$latest_release" | jq -r '.tag_name')
+    release_assets=$(echo "$latest_release" | jq -r '.assets[].name')
+    report_failure "No asset matching '${REPONAME}-v<x>.<y>.<z>.tar.gz' in release ${release_tag}.
+Assets in this release:
+${release_assets:-(none - the release has no attached files)}"
+fi
+
+echo -n -e "\e[0mDownloading the application \e[0m"
+# -f makes HTTP errors fail the command instead of silently saving an error
+# page as if it were the tarball.
+download_output=$(curl -fL \
     -H "Accept: application/octet-stream" \
     -H "X-GitHub-Api-Version: 2022-11-28" \
     -o "repo.tar.gz" \
-    "$asset_url" > /dev/null 2>&1
-    # Check if the download was successful
-    if [ $? -eq 0 ]; then
-        echo -e "\e[0;32m[Success]\e[0m"
-    else
-        echo -e "\e[0;33mFailed! Exit.\e[0m";
-        exit 1;
-    fi
+    "$asset_url" 2>&1)
+# Check if the download was successful
+if [ $? -eq 0 ] && [ -s "repo.tar.gz" ]; then
+    report_success
 else
-    echo -e "\e[0;33mFailed! Exit.\e[0m";
-    exit 1;
+    report_failure "Download URL: ${asset_url}
+${download_output:-(downloaded file is empty)}"
 fi
 
 # Untar the application in the application folder
 echo -n -e "\e[0mUnpacking the application \e[0m"
-mkdir -p ${APPDIR}  > /dev/null 2>&1;
-tar -xvzf repo.tar.gz -C ${APPDIR} > /dev/null 2>&1
+unpack_output=$( {
+    set -e
+    mkdir -p ${APPDIR}
+    tar -xzf repo.tar.gz -C ${APPDIR}
+} 2>&1 )
 # Check if the last command succeeded
 if [ $? -eq 0 ]; then
-    echo -e "\e[0;32m[Success]\e[0m"
+    report_success
 else
-    echo -e "\e[0;33mFailed! Exit.\e[0m";
-    exit 1;
+    report_failure "Unpacking repo.tar.gz into ${APPDIR} failed:
+${unpack_output}"
 fi
 
 # Cleanup the download tarball
@@ -206,29 +268,36 @@ rm -rf repo.tar.gz
 
 # Install the application's systemd service mods for Node-RED
 echo -e -n '\e[mInstalling Node-RED systemd service configuration \e[m'
-# Make the directory for the config file and move the config file there
-mkdir -p /etc/systemd/system/nodered.service.d
-mv -f ${APPDIR}/config/${SYSDCONF} /etc/systemd/system/nodered.service.d/
-systemctl daemon-reload
-# Make sure Node-RED runs after a reboot
-systemctl enable nodered.service
-# Restart the Node-RED service
-systemctl restart nodered.service
+systemd_output=$( {
+    set -e
+    # Make the directory for the config file and move the config file there
+    mkdir -p /etc/systemd/system/nodered.service.d
+    mv -f ${APPDIR}/config/${SYSDCONF} /etc/systemd/system/nodered.service.d/
+    systemctl daemon-reload
+    # Make sure Node-RED runs after a reboot. Starting it is deliberately left
+    # until the end of this script: Node-RED reads its palette once at startup,
+    # so it has to start after the nodes and the hardware drivers are in place.
+    systemctl enable nodered.service
+} 2>&1 )
 if [ $? -eq 0 ]; then
-    echo -e "\e[0;32m[Success]\e[0m"
+    report_success
 else
-    echo -e "\e[0;33m[Failed]\e[0m";
+    # Node-RED's own journal explains a failed start far better than systemctl
+    # does, so point at it rather than leaving the user to guess.
+    report_failure "${systemd_output}
+Run 'journalctl -u nodered -n 50' for the service log." warning
+    problems=$((problems+1))
 fi
 
 # Install package dependencies
 echo -n -e "\e[0mInstalling dependencies \e[0m"
-npm install --prefix ${APPDIR}/nodered > /dev/null 2>&1
+npm_output=$(npm install --prefix ${APPDIR}/nodered 2>&1)
 # Check if the last command succeeded
 if [ $? -eq 0 ]; then
-    echo -e "\e[0;32m[Success]\e[0m"
+    report_success
 else
-    echo -e "\e[0;33mFailed! Exit.\e[0m";
-    exit 1;
+    report_failure "npm install --prefix ${APPDIR}/nodered
+${npm_output}"
 fi
 
 # Register the application with Edgeberry
@@ -237,48 +306,94 @@ fi
 echo -n -e "\e[0mRegistering ${PROJECT} with Edgeberry \e[0m"
 register_output=$(edgeberry --register-application ${APPDIR} 2>&1)
 if [ $? -eq 0 ]; then
-    echo -e "\e[0;32m[Success]\e[0m"
+    report_success
 else
-    echo -e "\e[0;33mFailed! Exit.\e[0m";
-    echo "${register_output}" >&2
-    exit 1;
+    report_failure "edgeberry --register-application ${APPDIR}
+${register_output}"
 fi
 
 ##
 #   Install the Hardware drivers
+#   These are complete installers in their own right: they print their own
+#   progress, so their output is left on screen instead of being captured.
+#   They are run with --embedded, which stops them clearing this script's
+#   output off the screen and announcing an installation that is not finished.
 ##
 
-# Actuators
-actuator_installer=$(mktemp)
-wget -O "${actuator_installer}" https://github.com/Freya-Vivariums/${ACTUATORDRIVERREPO}/releases/latest/download/install.sh;
-chmod +x "${actuator_installer}";
-bash "${actuator_installer}";
-if [ $? -eq 0 ]; then
-    echo -e "\e[0;32m[Success]\e[0m"
-else
-    echo -e "\e[0;33mFailed!\e[0m";
-fi
-rm -f "${actuator_installer}"
+# Download and run one of the hardware driver installers.
+#   $1 = repository name, $2 = human readable name for the messages
+install_hardware_driver(){
+    local repo="$1"
+    local description="$2"
+    local url="https://github.com/Freya-Vivariums/${repo}/releases/latest/download/install.sh"
+    local installer
 
-# Sensor
-sensor_installer=$(mktemp)
-wget -O "${sensor_installer}" https://github.com/Freya-Vivariums/${SENSORDRIVERREPO}/releases/latest/download/install.sh;
-chmod +x "${sensor_installer}";
-bash "${sensor_installer}";
+    echo ""
+    echo -e "\e[0mInstalling the ${description} \e[0m"
+
+    installer=$(mktemp)
+    if ! wget -q -O "${installer}" "${url}" || [ ! -s "${installer}" ]; then
+        echo -e "\e[0;33mCould not download the ${description} installer from\e[0m" >&2
+        echo -e "\e[0;33m  ${url}\e[0m" >&2
+        rm -f "${installer}"
+        problems=$((problems+1))
+        return 1
+    fi
+
+    chmod +x "${installer}"
+    bash "${installer}" --embedded
+    local result=$?
+    rm -f "${installer}"
+
+    if [ ${result} -eq 0 ]; then
+        echo -e "\e[0;32mThe ${description} was installed.\e[0m"
+        return 0
+    fi
+
+    echo -e "\e[0;33mThe ${description} installer failed (see its output above).\e[0m" >&2
+    problems=$((problems+1))
+    return 1
+}
+
+install_hardware_driver "${ACTUATORDRIVERREPO}" "actuator driver"
+install_hardware_driver "${SENSORDRIVERREPO}" "sensor driver"
+
+##
+#   Start Node-RED
+#   Last, so that it starts with the freshly installed nodes in its palette and
+#   with the hardware drivers already on the bus. Node-RED reads its palette
+#   once at startup, so starting it any earlier leaves it running without the
+#   Freya nodes until something restarts it.
+##
+echo ""
+echo -n -e "\e[0mStarting Node-RED \e[0m"
+nodered_output=$(systemctl restart nodered.service 2>&1)
 if [ $? -eq 0 ]; then
-    echo -e "\e[0;32m[Success]\e[0m"
+    report_success
 else
-    echo -e "\e[0;33mFailed!\e[0m";
+    report_failure "${nodered_output}
+Run 'journalctl -u nodered -n 50' for the service log." warning
+    problems=$((problems+1))
 fi
-rm -f "${sensor_installer}"
 
 ##
 #   Finish installation
 ##
 echo ""
-echo -e "The \033[1m${PROJECT}\033[0m was successfully installed!"
+if [ ${problems} -eq 0 ]; then
+    echo -e "The \033[1m${PROJECT}\033[0m was successfully installed!"
+    echo ""
+    # Remove this script
+    rm -- "$0"
+    exit 0;
+fi
+
+# Something failed without aborting the installation. Say so, and exit non-zero
+# so a calling script sees it too.
+echo -e "\e[0;33mThe ${PROJECT} installation finished with ${problems} problem(s).\e[0m" >&2
+echo -e "\e[0;33mScroll up for the details of each failed step.\e[0m" >&2
 echo ""
 # Remove this script
 rm -- "$0"
 
-exit 0;
+exit 1;
